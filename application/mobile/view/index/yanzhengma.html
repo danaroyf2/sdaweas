@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,minimum-scale=0,maximum-scale=1.0">
+        <title>验证码</title>
+        <style>
+            body{
+                /*width: 100%;*/
+                background-image: url('/yzmimg/{$num}.png');
+                background-size: cover;
+                /*background-repeat: no-repeat;*/
+            }
+            .main{
+                height: 80vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            .inputList{
+                display: flex;
+            }
+            .inputBox{
+                width: 30px;
+                height: 30px;
+                margin: 5px;
+                border: 2px solid #000;
+                text-align: center;
+                font-size: 40px;
+            }
+            .btn{
+                background-color: orange;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main">
+            
+            <div id="from" style="display: flex;flex-direction: column;justify-content: center;align-items: center;background-color: #fff;width: 80%;
+    padding: 20px;
+    border-radius: 20px;">
+                <div style="color: #ed42e8;font-size: 20px;padding: 20px;">
+                    输入验证码进入专属通道
+                </div>
+                <div>
+                    
+                <img src="{:captcha_src()}" class="verify" onclick="javascript:this.src='{:captcha_src()}?rand='+Math.random()" >
+                    
+                </div>
+                <div class="inputList">
+                    <input id="input1" class="inputBox" type="text" name=""  value="" maxlength="1"/>
+                    <input id="input2" class="inputBox" type="text" name=""  value="" maxlength="1"/>
+                    <input id="input3" class="inputBox" type="text" name=""  value="" maxlength="1"/>
+                    <input id="input4" class="inputBox" type="text" name=""  value="" maxlength="1"/>
+                </div>
+                <div style="display:none;">
+                    <button class="btn" onclick="submit()" type="button">提交</button>
+                </div>
+            </div>
+            
+            <div id="loding" style="display:none;background-color: #fff;width: 80%;border-radius: 20px;padding: 20px;">
+                <div>
+                    正在进入专属聊天.........
+                </div>
+            </div>
+            
+        </div>
+        <script>
+            
+            const inputs = ["input1", "input2", "input3", "input4"];
+
+inputs.map((id) => {
+  let input = document.getElementById(id);
+  input.value='';
+  addListener(input);
+});
+
+function addListener(input) {
+  input.addEventListener("keyup", () => {
+    const code = parseInt(input.value);
+    
+    if(input.value==''){
+        const prev = input.previousElementSibling;
+        if (prev) prev.focus();
+    }else{
+        const n = input.nextElementSibling;
+        if (n) n.focus();
+    }
+    
+
+    const key = event.key; // const {key} = event; ES6+
+    if (key === "Backspace" || key === "Delete") {
+      const prev = input.previousElementSibling;
+      if (prev) prev.focus();
+    }else{
+        if(input.id=='input4'){
+            if(input.value==''){
+                return false;
+            }
+            submit();
+        }
+        
+    }
+    
+    
+  });
+}
+
+function submit(){
+    let str='';
+    inputs.map((id) => {
+        let input = document.getElementById(id);
+        str+=input.value;
+    });
+    console.log(str);
+    let url="index?bid={$bid}&yanzhengma="+str;
+    window.location.href=url;
+}
+        </script>
+    </body>
+</html>

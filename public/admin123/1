@@ -1,0 +1,140 @@
+  $yonghudizhi_sql= "select * from user where adds='".$rowfanshui["addsout"]."'";//判断改地址是不是我们的用户
+                $yonghudizhi_rs=mysqli_query($conn,$yonghudizhi_sql);
+                 $num=mysqli_num_rows($yonghudizhi_rs);
+                $rowyonghudizhi=mysqli_fetch_assoc($yonghudizhi_rs);
+              if($num>0)
+                {
+                    
+                      $yonghuid_sql= "select * from user where adds='".$rowfanshui["addsout"]."'";
+                      $yonghuid_rs=mysqli_query($conn,$yonghuid_sql);
+                      $rowyonghuid=mysqli_fetch_assoc($yonghuid_rs);
+                      $rowyonghuid=$rowyonghuid["id"];//获取用户id
+                      //获取用户的邀请人id
+                      $yqid_sql= "select * from user where id=$rowyonghuid";
+                      $yqid_rs=mysqli_query($conn,$yqid_sql);
+                      $rowyyqid=mysqli_fetch_assoc($yqid_rs);
+                      $rowyq=$rowyyqid["yq"];
+                      //获得该用户邀请人的代理类型
+                      $dailileixing_sql= "select * from user where id=$rowyq";
+                      $dailileixing_rs=mysqli_query($conn,$dailileixing_sql);
+                      $rowdailileixing=mysqli_fetch_assoc($dailileixing_rs);
+                      $dailileixingrow=$rowdailileixing["dltype"];
+           
+            		//判断昨日所有地址里面投注trx的总和
+                   	$tzongjine="select sum(money) as trxzonghe from addsin where addsout='".$rowfanshui["addsout"]."' and token='trx' and times like '%$date%'" ;
+                	 $trizonge=mysqli_query($conn,$tzongjine);
+                	 $rowtrizonge=mysqli_fetch_assoc($trizonge);
+                	 $trxzonghe=$rowtrizonge["trxzonghe"];
+                	 //计算反水千分之三比例
+                	 $tfanshui=floor($trxzonghe)*0.002;
+                    //判断昨日所有地址里面投注USDT的总和
+                     $uzongjine="select sum(money) as usdtzonghe from addsin where addsout='".$rowfanshui["addsout"]."' and token='trc20-usdt' and times like '%$date%'" ;
+                     $urizonge=mysqli_query($conn,$uzongjine);
+                     $rowusdtzonge=mysqli_fetch_assoc($urizonge);
+                	 $usdtzonghe=$rowusdtzonge["usdtzonghe"];
+                	  //计算反水千分之三比例
+                     $ufanshui=floor($usdtzonghe)*0.002;
+                      //计算出款钱包给地址用户转TRX总和
+                     $sql_trxouthe="select sum(money) as outtrxhe from addsout where addsin='".$rowfanshui["addsout"]."' and token='trx' and times like '%$date%'" ;
+                	 $rs_trxouthe=mysqli_query($conn,$sql_trxouthe);
+                	 $row_trxouthe=mysqli_fetch_assoc($rs_trxouthe);
+                	 $outtrxzonghe1=$row_trxouthe["outtrxhe"];
+                     
+                     //计算出款钱包给地址用户转USDT总和
+                     $sql_usdtouthe="select sum(money) as outusdthe from addsout where addsin='".$rowfanshui["addsout"]."' and token='trc20-usdt' and times like '%$date%'" ;
+                	 $rs_usdtouthe=mysqli_query($conn,$sql_usdtouthe);
+                	 $row_usdtouthe=mysqli_fetch_assoc($rs_usdtouthe);
+                	 $outusdtzonghe1=$row_usdtouthe["outusdthe"];
+                
+                	  $trxlirun=round($trxzonghe,2)-round($outtrxzonghe1,2);//投注的金额-给他回款的金额
+                	  $usdtlirun=round($usdtzonghe,2)-round($outusdtzonghe1,2);
+                	
+               
+                ?>
+              
+
+               <tr class="text-c">
+                <td><?php echo $rowyonghuid?></td>
+                <td><?php echo $yhaddsout?></td>
+                <td><?php echo $usdtzonghe?></td>
+                <td><?php echo $trxzonghe?></td>
+                <td><?php echo $usdtlirun?></td>
+                <td><?php echo $trxlirun?></td>
+                <td><?php echo $ufanshui?></td>
+                <td><?php echo $tfanshui?></td>
+                <td><?php echo $date?></td>
+               </tr>
+             
+              
+              
+            <?php
+
+                 
+                }
+            else
+                {
+                   
+                       
+                    //判断昨日所有地址里面投注trx的总和
+                	 $tzongjine1="select sum(money) as trxzonghe from addsin where addsout='".$rowfanshui["addsout"]."' and token='trx' and times like '%$date%'" ;
+                	 $trizonge1=mysqli_query($conn,$tzongjine1);
+                	 $rowtrizonge1=mysqli_fetch_assoc($trizonge1);
+                	 $trxzonghe1=$rowtrizonge1["trxzonghe"];
+                	 //计算反水千分之三比例
+                	 $tfanshui1=floor($trxzonghe1)*0.002;
+                    //判断昨日所有地址里面投注USDT的总和
+                     $uzongjine1="select sum(money) as usdtzonghe from addsin where addsout='".$rowfanshui["addsout"]."' and token='trc20-usdt' and times like '%$date%'" ;
+                     $urizonge1=mysqli_query($conn,$uzongjine1);
+                     $rowusdtzonge1=mysqli_fetch_assoc($urizonge1);
+                	 $usdtzonghe1=$rowusdtzonge1["usdtzonghe"];
+                	  //计算反水千分之三比例
+                     $ufanshui1=floor($usdtzonghe1)*0.002;
+                     //计算出款钱包给地址用户转TRX总和
+                     $trxouthe1="select sum(money) as outtrxzonghe from addsout where addsin='".$rowfanshui["addsout"]."' and token='trx' and times like '%$date%'" ;
+                	 $rstrxouthe1=mysqli_query($conn,$trxouthe1);
+                	 $rowtrxouthe1=mysqli_fetch_assoc($rstrxouthe1);
+                	 $outtrxzonghe=$rowtrxouthe1["outtrxzonghe"];
+                     
+                     //计算出款钱包给地址用户转USDT总和
+                     $usdtouthe1="select sum(money) as outusdtzonghe from addsout where addsin='".$rowfanshui["addsout"]."' and token='trc20-usdt' and times like '%$date%'" ;
+                	 $rsusdtouthe1=mysqli_query($conn,$usdtouthe1);
+                	 $rowusdtouthe1=mysqli_fetch_assoc($rsusdtouthe1);
+                	 $outusdtzonghe=$rowusdtouthe1["outusdtzonghe"];
+                	 
+                	 
+                	 
+                	 //计算出TRX以及USDT当日利润
+                	   $trxlirun1=round($trxzonghe1,2)-round($outtrxzonghe,2);
+                	  $usdtlirun1=round($usdtzonghe1,2)-round($outusdtzonghe,2);
+                     //写入财报表
+                    // $caibao_sql="insert into caibao (uid,adds,tliushui,uliushui,tshuying,ushuying,shijian,ufanshui,tfanshui,ttixian,utixian) values ('散人玩家','$yhaddsout','$trxzonghe','$usdtzonghe','$trxlirun','$usdtlirun','$zuotian','$ufanshui','$tfanshui','2','2')";
+                   
+                     // $rs_caibao=mysqli_query($conn,$caibao_sql);
+                if($trxzonghe1>9 || $usdtzonghe1>9)
+              { 	     
+                ?>
+              
+             
+              <tr class="text-c">
+                <td><?php echo '散人玩家'?></td>
+                <td><?php echo $yhaddsout?></td>
+                <td><?php echo $usdtzonghe1?></td>
+                <td><?php echo $trxzonghe1?></td>
+                <td><?php echo $usdtlirun1?></td>
+                <td><?php echo $trxlirun1?></td>
+                <td><?php echo '无'?></td>
+                <td><?php echo '无'?></td>
+                <td><?php echo $date?></td>
+               </tr>
+              
+               
+             
+              
+              
+            <?php
+                    }	
+                }
+         
+              
+            
+             }

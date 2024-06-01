@@ -1,0 +1,347 @@
+{include file="public/header"/}
+<style>
+    .head {
+        margin: 10px 0px;
+        height: 40px;
+        line-height: 40px;
+        background: #ddd;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .head .title {
+        padding: 0px 15px;
+    }
+
+    .handler .back .img{
+        width: 16px;
+        height: 16px;
+        margin: 6px 0 0 16px;
+        float: left;
+        background: url("__image__/admin/B/back-system.png");
+    }
+
+
+    .custom .layui-layer-ico{
+        height: 24px;
+        width: 24px;
+        background:url("__image__/admin/B/cha.png") no-repeat;
+    }
+
+    .custom .layui-layer-content{
+        padding: 0 16px;
+        margin-right: 20px;
+    }
+    .recycle{
+        float: left;
+        margin-left: 40px;
+        width: 20px;
+        height: 20px;
+        background:url("__image__/admin/B/delete.png") no-repeat;
+        cursor: pointer;
+    }
+    #container{
+        background-color: #fff; 
+    }
+</style>
+<div id="container" style="padding-bottom: 42px">
+    <h2 class="page-header" style="font-size: 18px;color: #555555;"> 打招呼</h2>
+    <div class="handler">
+        <!--<a href="{:url('admin/index/set')}">-->
+        <!--    <div class="back">-->
+        <!--        <i class="img"></i>-->
+                <!--<span>返回设置</span>-->
+        <!--    </div>-->
+        <!--</a>-->
+
+<!--        <a onclick="editcustom(0)">-->
+        <a onclick="openLayerTab()"> 
+            <div class="button">
+                +添加打招呼
+            </div>
+        </a>
+    </div>
+
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>打招呼</th>
+            <th>发送顺序</th>
+            <th style="width: 100px;">状态</th>
+            <th style="width: 275px;">操作</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {volist name='lister' id='talk'}
+        <tr>
+            <td style="word-wrap:break-word;max-width: 800px;">
+                {if $talk.type=='text'}
+                    {$talk['content_src']}
+                
+                {elseif  $talk.type=='image'}
+                    <img class="chat-img" src="{$talk['content_src']}" >
+                {elseif  $talk.type=='audio'}
+                    <div>
+                        <!--<a href="{$talk['content_src']}" style='display: inline-block;text-align: center;min-width: 70px;text-decoration: none;' download="{$talk['content_src']}"><i class='layui-icon' style='font-size: 60px;'>&#xe61e;</i><br></a>-->
+                        <audio src="{$talk['content_src']}" controls></audio>
+                    </div>
+                {elseif  $talk.type=='video'||$talk.type=='vido'}
+                    <div>
+                        <!--<a href="{$talk['content_src']}" style='display: inline-block;text-align: center;min-width: 70px;text-decoration: none;' download="{$talk['content_src']}"><i class='layui-icon' style='font-size: 60px;'>&#xe61e;</i><br></a>-->
+                        <video src="{$talk['content_src']}" controls></video>
+                    </div>
+                {/if}
+            </td>
+            <td style="word-wrap:break-word;max-width: 800px;">
+                <input type="text" name="weigh" value="{$talk['weigh']}">
+                <button sid="{$talk['sid']}" onclick="changeweigh(this)">修改</button>
+            </td>
+            {if $talk.state == 'using'}
+            <td>
+                <div class="am-btn-primary" style="border-radius: 13px;font-size: 13px;color: #7571f9;width: 70px;height: 26px;background-color: #F5FAFF;text-align: center;padding-top: 3px;display:none;">默认使用</div>
+            </td>
+            {else}
+                <td><i class="am-btn-defulat"></i></td>
+            {/if}
+            <td>
+                <a href='javascript:setdefalut({$talk.sid})' style="float: left;font-size: 13px;"> 设置默认
+                    {if $talk.state == 'using'}
+                    <img src="__image__/admin/B/open.png" style="width: 36px;height: 18px;margin-left: 8px" alt="">
+                    {else}
+                    <img src="__image__/admin/B/close.png" style="width: 36px;height: 18px;margin-left: 8px" alt="">
+                    {/if}
+                </a>
+                <a href='javascript:editTab({$talk.sid})' >
+                    <img src="__image__/admin/A/edit.png" alt="编辑" title="编辑">
+                </a>
+                <div id="datadetail{$talk.sid}" data-type="{$talk.type}" style="display:none;">
+                    {$talk.content_src}
+                </div>
+                <a href='javascript:tdelete({$talk.sid})'>
+                    <img src="__image__/admin/A/delete.png" alt="删除" title="删除">
+                </a>
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    {$page}
+</div> 
+
+
+<script type="text/javascript">
+    function show(id) {
+        layer.open({
+            skin:"question",
+            type: 2,
+            title: '编辑',
+            area: ['800px', '750px'],
+            content: YMWL_ROOT_URL + '/admin/index/custom_editer?id=' + id
+        });
+    }
+	$("#addword").on("click", function () {
+		var str = '';
+		str += '<form  class="layui-form" style="margin-top:23px;" >';
+		str += '<div class="layui-form-item layui-form-text">';
+		str += '<div class="layui-input-block" style="margin-left:20px;"><textarea id="talks" placeholder="请输入内容" class="layui-textarea" style="width:100%;height: 160px;border: 1px solid #e5e3e9;border-radius: 8px;resize:none;padding: 16px;"></textarea></div></div>';
+		str += '</from>';
+
+		var lock = false;
+		layer.open({
+			skin: 'custom',
+			title: '添加打招呼',
+			type: 1,
+			area: ['600px', '316px'],
+			content: str,
+			btn: ['保存', '取消'],
+			yes: function () {
+				if (!lock) {
+					lock = true;
+					$.ajax({
+						url:YMWL_ROOT_URL+"/admin/manager/cmtalk",
+						type: "post",
+						data: {content: $("#talks").val(),type:'text',content_type:'text'},
+						success: function (res) {
+							if (res.code ==0) {
+								layer.msg(res.msg, {icon: 1,time:2000,end:function () {
+										location.reload();
+									}});
+
+							}
+
+						}
+					})
+				}
+			}
+		});
+	});
+
+
+	function setdefalut(id) {
+		$.ajax({
+			url:YMWL_ROOT_URL+'/admin/set/settalkdefa',
+			type: 'post',
+			data: {tid: id},
+			success: function (res) {
+				if (res.code == 0) {
+					if(res.data){
+						 layer.msg('设置成功', {icon: 1,time:2000,end:function () {
+							location.reload();
+						}});
+					}
+				  
+				}
+			}
+		});
+	}
+
+
+	function tdelete(id) {
+		$.ajax({
+			url:YMWL_ROOT_URL+'/admin/set/tdelete',
+			type: 'post',
+			data: {tid: id},
+			success: function (res) {
+				if (res.code == 0) {
+					if(res.data){
+					  layer.msg('删除成功',{time:2000,end:function () {
+							  location.href = "{:url('admin/index/custom')}";
+						  }});
+					}
+				}
+			}
+		});
+	}
+
+	function editcustom1(sid){
+		layer.open({
+			type: 2,
+			skin:"tablist",
+			title: (sid >0)?'编辑打招呼':'新增打招呼',
+			area: ['800px', '560px'],
+			content: YMWL_ROOT_URL + '/admin/index/editercustom?sid=' + sid
+		});
+	}
+</script>
+
+<script>
+    //修改权重
+    function changeweigh(that){
+        //console.log($(that));
+        let sid=$(that).attr('sid');
+        let weigh=$(that).prev().val();
+        console.log($(that).attr('sid'));
+        console.log($(that).prev().val());
+
+        $.ajax({
+            url:YMWL_ROOT_URL+"/admin/set/changeweigh",
+            type: "post",
+            data: {sid:sid,weigh: weigh,}
+        }).then(function (res){
+
+            layer.alert('修改成功', function(index){window.location.reload();layer.close(index);});
+
+        });
+
+    }
+    function submittypeimg(sid,ajax_type,send_src,sendcontent){
+        let data={sid:sid,type:ajax_type,content: send_src,content_type:ajax_type,content_src:sendcontent};
+        console.log(data);
+        $.ajax({
+            url:YMWL_ROOT_URL+"/admin/set/setcustom",
+            type: "post",
+            data: data
+        }).then(function (res){
+            console.log(res);
+        });
+    }
+    function layertabsend(type,content) {
+        //http://118.193.34.46/admin/set/setcustom
+        console.log(type,content);
+        let sendcontent='';
+        let sid=$("#layer_lab_alert").attr("data-sid")
+        let send_src=""
+        let ajax_type=''
+        
+        if(type=='wenben'){
+            
+            sendcontent=layer_DomUe.getContent()
+            if(sendcontent==''||sendcontent==null){
+                layer.msg("请输入内容")
+                return 0;
+            }
+            
+            ajax_type='text'
+            send_src=sendcontent
+            $.ajax({
+                url:YMWL_ROOT_URL+"/admin/set/setcustom",
+                type: "post",
+                data: {sid:sid,type:ajax_type,content: send_src,content_type:ajax_type,content_src:sendcontent}
+            }).then(function (res){
+                console.log(res);
+                layer.alert(sid==0?'添加成功':'编辑成功', function(index){window.location.reload();layer.close(index);});
+            });
+        }
+        else if(type=='img'){
+            ajax_type='image';
+            var time=0;
+            if(content.length==0||content==null||content==''){
+                layer.msg("请输入内容")
+                return 0;
+            }
+            $.each(content,function(i,n){
+                sendcontent=content[i]
+                send_src="<img src='"+content[i]+"'>" 
+                submittypeimg(sid,ajax_type,send_src,sendcontent)
+                console.log(i);
+            })
+            console.log("eachover")
+            layer.alert(sid==0?'添加成功':'编辑成功', function(index){window.location.reload();layer.close(index);});
+           
+        }
+        else if(type=='audio'){
+            if(content.url==''||content==null){
+                layer.msg("请输入内容")
+                return 0;
+            }
+            ajax_type='audio';
+            sendcontent=content.url
+            send_src="<audio src='"+content.url+"' controls></audio>"
+            $.ajax({
+                url:YMWL_ROOT_URL+"/admin/set/setcustom",
+                type: "post",
+                data: {sid:sid,type:ajax_type,content: send_src,content_type:ajax_type,content_src:sendcontent}
+            }).then(function (res){
+                console.log(res);
+                layer.alert(sid==0?'添加成功':'编辑成功', function(index){window.location.reload();layer.close(index);});
+            });
+        }
+
+        else if(type=="vido"||type=="video"){
+            if(content.url==''||content==null){
+                layer.msg("请输入内容")
+                return 0;
+            }
+            sendcontent=content.url
+             ajax_type='vido'
+             send_src="<video src='"+content.url+"' controls></video>"
+             $.ajax({
+                url:YMWL_ROOT_URL+"/admin/set/setcustom",
+                type: "post",
+                data: {sid:sid,type:ajax_type,content: send_src,content_type:ajax_type,content_src:sendcontent}
+            }).then(function (res){
+                console.log(res);
+                layer.alert(sid==0?'添加成功':'编辑成功', function(index){window.location.reload();layer.close(index);});
+            });
+        }
+        
+
+
+
+        
+    }
+
+</script>
+{include file="public/lib/layertabalert"/}
+{include file="public/footer"/}

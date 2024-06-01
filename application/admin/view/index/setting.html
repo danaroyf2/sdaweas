@@ -1,0 +1,696 @@
+{include file="public/header"/}
+
+<style>
+
+
+    .part {
+        width: 96%;
+        margin-top: 20px;
+    }
+
+    .person-setting {
+        height: 208px;
+    }
+
+    .system-setting {
+        height: 208px;
+    }
+
+    .part-item {
+        width: 120px;
+        height: 120px;
+        position: relative;
+        cursor: pointer;
+        float: left;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 6px 11px 41px -28px #a99de7;
+        background-image: linear-gradient(230deg, #759bff, #843cf6);
+    }
+
+    .part-item:first-child {
+        margin-left: 40px;
+    }
+
+    .part-item:hover {
+        background-image: linear-gradient(230deg, #0e4cfd, #6a8eff);
+        box-shadow: 0 0 8px 2px rgba(0, 0, 0, .1);
+    }
+
+    .part-item .part-szico {
+        margin-top: 20px;
+        font-size: 50px;
+        position: absolute;
+        left: 35px;
+        color: #fff;
+    }
+
+
+    .part-item span {
+        position: absolute;
+        bottom: 10px;
+        width: 120px;
+        color: #fff;
+        text-align: center;
+    }
+
+    .page-header {
+        border-bottom: 0;
+        margin-left: 40px;
+    }
+    .data_left{
+        display: flex;
+    flex: 1;
+    /* text-align: center; */
+    justify-content: center;
+        
+    }
+    .data-right{
+        display: flex;
+    flex: 1;
+    /* text-align: center; */
+    justify-content: center;
+    }
+    .item_data{
+        display: flex;
+    align-items: center;
+    }
+</style>
+<div id="container" data-id="{$user['business_id']}" style="">
+    <div class="" style="
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding-top: 30px;">
+        <div class="layui-form">
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">卡密</label>
+                  <div class="layui-input-inline layui-input-wrap" style="width:250px">
+                    <div id="setting_kami"></div>
+                  </div>
+                  <div class="layui-form-mid" style="padding: 0!important;"> 
+                    <button type="button" id="setting_kami_btn" data-clipboard-text="{$service['kami']}"  class="layui-btn layui-btn-primary copy_text" lay-on="get-copy">复制</button>
+                  </div>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">到期时间</label>
+                  <div class="layui-input-inline layui-input-wrap">
+                    <input type="text" name="end_time" value="{:date('Y-m-d H:i:s',$business['expire_time'])}" lay-verify="required" autocomplete="off" disabled="disabled" lay-affix="clear" class="layui-input ">
+                  </div>
+                  <div class="layui-form-mid" style="padding: 0!important;"> 
+                    <button type="button" class="layui-btn layui-bg-red" lay-on="get-xufei">续费</button>
+                  </div>
+                </div>
+              </div>
+              <form id="info_form2">
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">昵称</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="nickname" lay-verify="required" placeholder="请输入昵称" value="{$service['nick_name']}" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                 
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">头像</label>
+                    <div class="layui-input-inline am-form-file">
+                        <button type="button" class="layui-btn"  id="upload-headimg-btn">
+                          <i class="layui-icon layui-icon-upload"></i> 上传图片
+                        </button>
+                        <div style="width: 132px;">
+                          <div class="layui-upload-list">
+                            <img class="layui-upload-img" id="img_head333" style="width: 100%; height: 92px;">
+                            <input name='img_head333' hidden="true">
+                            <div id="ID-upload-demo-text"></div>
+                          </div>
+                          <div class="layui-progress layui-progress-big" lay-showPercent="yes" lay-filter="filter-demo">
+                            <div class="layui-progress-bar" lay-percent=""></div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                  
+                  
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">聊天时需要输验证码{$service['yanzhengma']}</label>
+                    <div class="layui-input-block">
+                      <input type="checkbox" name="yanzhengma" lay-text="ON|OFF" lay-skin="switch" >
+                    </div>
+                  </div>
+                  
+              </form>
+       
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button type="submit" class="layui-btn" lay-submit lay-filter="setting_left">立即提交</button>
+                  <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
+                </div>
+              </div>
+        </div>   
+        <div class="layui-form layui-form-right">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">话术复制</label>
+                  <div class="layui-form-mid" style="padding: 0!important;"> 
+                    <a href="http://admin.dev8xgxl.store/admin/kuaijie/index.php" target="_blank"><button type="button" class="layui-btn" >一键配置</button></a>
+                  </div>
+                </div>
+            </div> 
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">话术局部替换</label>
+                  <div class="layui-form-mid" style="padding: 0!important;"> 
+                    <a href="http://admin.dev8xgxl.store/admin/kuaijie/tihuan.php" target="_blank"><button type="button" class="layui-btn" >一键替换</button></a>
+                  </div>
+                </div>
+            </div>
+    
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">删除访客</label>
+                  <div class="layui-input-block">
+                      <button type="button" lay-on="remove_three" class="layui-btn">删除三天前</button>
+                      <button type="button" lay-on="remove_five" class="layui-btn layui-bg-blue">删除五天前</button>
+                      <button type="button" lay-on="remove_all" class="layui-btn layui-bg-red">全部删除</button>
+                  </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label"></label>
+                  <div class="layui-input-block">
+                      <button class="layui-btn" lay-on="add_yuming">添加专属域名</button>
+                      <button class="layui-btn" lay-on="chaxun_yuming">查询专属域名</button>
+                  </div>
+                </div>
+            </div>
+            
+            
+        </div> 
+    </div>
+   
+</div>
+<div id="add_yuming_contennt" style="display:none;">
+    <div class="content_index" style="padding:0 20px;">
+        <div class="red_text" style="color:red;margin: 20px 0;">
+            域名填写示例:http://www.baidu.com [请必须按照此格式填写]
+        </div>    
+        <div class="layui-form">
+             <div class="layui-form-item">
+                <label class="layui-form-label" style="width:120px;margin-right:0px;">二维码域名</label>
+                <div class="layui-input-block layui-input-wrap" style="margin-left:120px;">
+                  <input type="text" id="code_yuming" name="code_yuming" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+        </div>    
+        <div class="" style="text-align: right;
+    margin-top: 20px;">
+            <button onclick="addzhuanshuyuming()" class="layui-btn">确定</button>
+        </div>    
+    </div>    
+    <script>
+        //添加专属域名 
+        function addzhuanshuyuming(){
+            let name=$('#code_yuming').val();
+            if(!name){
+                layer.alert('域名不能为空');
+            }
+            let url=location.origin+'/api/Serveruser/addzhuanshuyuming';
+            let data={name:name,token:sessionStorage.getItem("token")}
+            $.ajax({
+                url: url,
+                type:"post",
+                async:false,
+                  beforeSend: function (request) {
+                        request.setRequestHeader("token",sessionStorage.getItem("token"));
+                  },
+                data:data,
+                success: function (res) {
+                    console.log(res);
+                    layer.msg(res.msg)
+
+                    
+                }
+            });
+
+            
+            //addzhuanshuyuming
+
+        }
+        
+    </script>
+</div>    
+<div id="select_yuming_contennt" style="display:none;">
+    <div class="content_index" style="padding:0 20px;">
+        <div class="red_text" style="color:red;margin: 20px 0;">
+            请输入需要查询的专属二维码域名，可查询该专属二维码域名是否被使用或多少张卡密共用
+        </div>  
+        <div class="red_text" style="color:red;margin: 20px 0;">
+            域名填写示例:http://www.baidu.com [请必须按照此格式填写]
+        </div>    
+        <div class="layui-form">
+             <div class="layui-form-item">
+                <label class="layui-form-label" style="width:120px;margin-right:0px;">二维码域名</label>
+                <div class="layui-input-block layui-input-wrap" style="margin-left:120px;">
+                  <input type="text" id="findyumhuiyuan_code" name="code_yuming" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+               <div class="" style="text-align: right;
+    margin-top: 20px;">
+            <button onclick="findyumhuiyuan()" class="layui-btn">确定</button>
+        </div> 
+        <script>
+            //通过输入的域名查找会员
+            function findyumhuiyuan(){
+                let name=$('#findyumhuiyuan_code').val();
+                if(!name){
+                    layer.alert('域名不能为空');
+                    return false;
+                }
+               
+                let data={name:name,token:sessionStorage.getItem("token")}
+                let url=location.origin+'/api/Serveruser/findyumhuiyuan';
+                $.ajax({
+                    url: url,
+                    type:"post",
+                    async:false,
+                      beforeSend: function (request) {
+                            request.setRequestHeader("token",sessionStorage.getItem("token"));
+                      },
+                    data:data,
+                    success: function (res) {
+                        console.log(res);
+                        let kamilistData=$('#kamilistData');
+                        let str='';
+                        if(res.code=='0'){
+                            layer.alert(res.msg);
+                        }
+                        if(res.code=='1'){
+                            for(let i of res.data){
+                                str+=` 
+                                    <div class="item_data">
+                                        <div class="data_left">${name}</div>
+                                        <div class="data-right">${i.kami}</div>
+                                    </div>
+                                `
+                            }
+                            kamilistData.html(str);
+                        }
+                        
+    
+                        
+                    }
+                });
+                // $.post(url,data,(res)=>{
+                //     if(res.code=='0'){
+                //         layer.alert(res.data);
+                //     }
+                //     if(res.code=='1'){
+                //         let kamilistData=$('#kamilistData');
+                //         let str='';
+                //         for(let i of res.data){
+                //             str+=` 
+                //                 <div class="item_data">
+                //                     <div class="data_left">${name}</div>
+                //                     <div class="data-right">${i.kami}</div>
+                //                 </div>
+                //             `
+                //         }
+                //         kamilistData.html(str);
+                //     }
+                // })
+                
+            }
+        </script>
+        </div> 
+        <div class="" style="margin:20px 0;">当前使用查询的专属二维码域名卡密列表</div>
+        <div style="border:1px solid #c9c9c9;">
+            <div class="item_data">
+                <div class="data_left">域名</div>
+                <div class="data-right">卡密</div>
+            </div>
+            <div id='kamilistData'>
+                 <div class="item_data">
+                <div class="data_left"></div>
+                <div class="data-right"></div>
+            </div> 
+            </div>
+           
+        </div>    
+       
+    </div> 
+</div>  
+
+<script>
+layui.use(function(){
+  var upload = layui.upload;
+  var layer = layui.layer;
+  var form = layui.form;
+  var element = layui.element;
+   var util = layui.util;
+  var $ = layui.$;
+    $.ajax({
+      url: location.origin+'/api/Serveruser/getserveruserBytoken',
+      type: 'post',
+      dataType : "json",
+      async:false,
+      beforeSend: function (request) {
+            request.setRequestHeader("token",sessionStorage.getItem("token"));
+      },
+      data : { token :sessionStorage.getItem("token") },
+      dataType: 'json',
+    
+      success: function(res){
+          console.log(res)
+          
+           if(res.code=1){
+    	      $("#userkami").html(res.data.kami)
+    	      $("input[name=end_time]").val(res.data.kamidata.dqtime)
+    	      $("#userlogo").attr("src",location.origin+'/'+res.data.avatar)
+    	      $("#setting_kami").html(res.data.kami)
+    	      $("#setting_kami_btn").attr("data-clipboard-text",res.data.kami)
+    	      $("input[name='nickname']").val(res.data.nick_name);
+    	      $("#img_head2").attr("src",location.origin+res.data.avatar)
+    	      $('#img_head333').attr('src', location.origin+res.data.avatar);
+    	      $('input[name=img_head333]').val(res.data.avatar);
+    	      //$('input[name=yanzhengma]').attr("checked");
+    	      if(res.data.yanzhengma=='on'){
+    	           $('input[name="yanzhengma"]').prop("checked",true);
+    	           form.render('checkbox');
+    	      }
+    	     
+    	   //   $("#setting_kami_btn").html(res.data.kami)
+    	      sessionStorage.setItem('userinfo',JSON.stringify(res.data)); 
+    	   }
+    	   else{
+    	       
+    	   }
+      },
+      
+    
+    })
+   //单图片上传
+  var uploadheadimg = upload.render({
+    elem: '#upload-headimg-btn',
+    url: "{:url('set/myupload')}", // 实际使用时改成您自己的上传接口即可。
+    field:'upload',
+    before: function(obj){
+      // 预读本地文件示例，不支持ie8
+      obj.preview(function(index, file, result){
+        //$('#img_head333').attr('src', result); // 图片链接（base64）
+      });
+
+      
+
+      element.progress('filter-demo', '0%'); // 进度条复位
+      layer.msg('上传中', {icon: 16, time: 0});
+    },
+    done: function(res){
+      // 若上传失败
+      console.log("上传",res);
+      if(res.code != 0){
+        return layer.msg('上传失败');
+      }
+      else{
+         $('#img_head333').attr('src', location.origin+res.data);
+         $('input[name=img_head333]').val(res.data);
+      }
+      
+      // 上传成功的一些操作
+      // …
+      $('#ID-upload-headimg-text').html(''); // 置空上传失败的状态
+    },
+    error: function(){
+      // 演示失败状态，并实现重传
+      var demoText = $('#ID-upload-headimg-text');
+      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs headimg-reload">重试</a>');
+      demoText.find('.headimg-reload').on('click', function(){
+        uploadheadimg.upload();
+      });
+    },
+    // 进度条
+    progress: function(n, elem, e){
+      element.progress('filter-demo', n + '%'); // 可配合 layui 进度条元素使用
+      if(n == 100){
+        layer.msg('上传完毕', {icon: 1});
+      }
+    }
+  });
+  form.on('submit(setting_left)', function(data){
+    var field = data.field; // 获取表单字段值
+    // 显示填写结果，仅作演示用
+
+    
+            $("#info_form2").ajaxSubmit({
+                
+                url:location.origin+"/api/Serveruser/updateuserinfo",
+                type: 'post',
+                async:false,
+                  beforeSend: function (request) {
+                        request.setRequestHeader("token",sessionStorage.getItem("token"));
+                  },
+                data:{
+                     token:sessionStorage.getItem("token"),
+                },
+                success: function (res) {
+                     console.log("999",res);
+                    if(res.code == 0){
+
+                        console.log(res);
+                        window.location.reload();
+
+                    }else{
+                        layer.msg(res.msg, {icon: 0});
+                    }
+
+                }
+            });
+    // 此处可执行 Ajax 等操作
+
+    // …
+    return false; // 阻止默认 form 跳转
+  });
+  util.on('lay-on', {
+    // 获取验证码
+    "get-copy": function(othis){
+      console.log(othis)
+      
+      $(".copy_text").attr("data-clipboard-text",$("input[name='kami']").eq(0).val());
+      var clipboard = new ClipboardJS('.copy_text');
+      clipboard.on('success', function(e) {
+          alert('复制成功');
+           e.clearSelection();
+          
+          e.clearSelection();
+      });
+       this.click();  //解决clipboard二次点击生效问题
+       clipboard.destroy();  //解决多次弹窗
+    },
+    "add_yuming":function(othis){
+        console.log(othis)
+        layer.open({
+            type: 1,
+            title:"专属二维码域名",
+            shade:0,
+            area: ['600px', '300px'], // 宽高
+            content: $("#add_yuming_contennt")
+         });
+    },
+    "chaxun_yuming":function(othis){
+        console.log(othis)
+        layer.open({
+            type: 1,
+            title:"查询专属二维码域名",
+            shade:0,
+            area: ['600px', '500px'], // 宽高
+            content: $("#select_yuming_contennt")
+        });
+    },
+    "get-xufei": function(othis){
+      console.log(othis)
+      layer.prompt({title: '请输入卡密'}, function(pass, index){
+        layer.close(index);
+        if(pass==''){
+            layer.msg("卡密不能为空")
+        }
+        else{
+            $.ajax({
+                
+                url: "/api/Serveruser/renew",
+                async:false,
+                beforeSend: function (request) {
+                    request.setRequestHeader("token",sessionStorage.getItem("token"));
+                },
+                type:"post",
+                data:{
+                    kami:pass,
+                    token:sessionStorage.getItem("token")
+                },
+                success: function (res) {
+                    console.log(res);
+                    layer.msg(res.msg)
+                }
+            });
+        }
+        
+       
+      });
+    },
+    "yijian_peizhi": function(othis){
+      console.log(othis)
+      layer.prompt({title: '请输入卡密'}, function(pass, index){
+        if(!pass){
+            alert('卡密不能为空');
+        }else{
+             let url="{:url('Tongbu/leibietongbu')}";
+             let data={
+                kami:pass,
+                leixing:'0,1,2,3',
+             }
+              
+                
+             $.post(url,data,(res)=>{
+                layer.alert(res.data);
+                layer.close(index);
+             })
+        }
+        //alert('您输入的卡密：'+ pass +'');
+        
+      });
+    }, 
+    "remove_three":function(othis){
+         console.log(othis)
+         $.ajax({
+                url: "/api/Chat/truncates",
+                type:"post",
+                async:false,
+                  beforeSend: function (request) {
+                        request.setRequestHeader("token",sessionStorage.getItem("token"));
+                  },
+                
+                data:{
+                    
+                    token:sessionStorage.getItem("token"),
+                    talk:"no",
+                    talk_time:6
+                },
+                success: function (res) {
+                    console.log(res);
+                    layer.msg(res.msg)
+                }
+            });
+    },
+    "remove_five":function(othis){
+         console.log(othis)
+         $.ajax({
+                url: "/api/Chat/truncates",
+                type:"post",
+                async:false,
+                  beforeSend: function (request) {
+                        request.setRequestHeader("token",sessionStorage.getItem("token"));
+                  },
+                data:{
+                    
+                    token:sessionStorage.getItem("token"),
+                    talk:"no",
+                    talk_time:5
+                },
+                success: function (res) {
+                    console.log(res);
+                    layer.msg(res.msg)
+                }
+            });
+    },
+    "remove_all":function(othis){
+         console.log(othis)
+         $.ajax({
+                url: "/api/Chat/truncates",
+                type:"post",
+                async:false,
+                  beforeSend: function (request) {
+                        request.setRequestHeader("token",sessionStorage.getItem("token"));
+                  },
+                data:{
+                    
+                    token:sessionStorage.getItem("token"),
+                    talk:"no",
+                    talk_time:0
+                },
+                success: function (res) {
+                    console.log(res);
+                    layer.msg(res.msg)
+                }
+            });
+    },
+    "yijian_ttihuan":function(othis){
+        console.log("123");
+        layer.open({
+            type: 1,
+            title:"话术局部替换",
+            shade:0,
+            area: ['600px', '500px'], // 宽高
+            content: $("#set_tihuan")
+        });
+        
+    }
+  });
+     
+})
+$(function () {
+    // $("#img_head333").change(function() {
+    //     var objUrl = getObjectURL(this.files[0]);
+    //     console.log("objUrl=" + objUrl);
+    //     if (objUrl) {
+    //         $("#img_head2").attr("src", objUrl);
+    //     }
+    // });
+    // function getObjectURL(file) {
+    //     var url = null;
+    //     if (window.createObjectURL != undefined) {
+    //         url = window.createObjectURL(file);
+    //     } else if (window.URL != undefined) {
+    //         url = window.URL.createObjectURL(file);
+    //     } else if (window.webkitURL != undefined) {
+    //         url = window.webkitURL.createObjectURL(file);
+    //     }
+    //     return url;
+    // }
+
+        $("#set_savebtn").click(function () {
+            var checkValue = [];
+            let kami=$('input[name=set_kami]').val();
+            $('input[name=choose_set]:checked').each(function () {
+                checkValue.push($(this).val());
+            });
+            if(!kami){
+                layer.alert('卡密不能为空!');
+                return false;
+            }
+            
+            if (checkValue == "") {
+                alert("请选择选项!");
+                return false;
+            } else {
+                
+                let url="{:url('Tongbu/leibietongbu')}";
+                let data={
+                    kami:kami,
+                    leixing:checkValue.join(','),
+                }
+                console.log(checkValue);
+                console.log(kami)
+                
+                $.post(url,data,(res)=>{
+                    layer.alert(res.data);
+                })
+            }
+
+        })
+    })
+</script>
+{include file="public/footer"/}
+
+

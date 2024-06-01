@@ -1,0 +1,317 @@
+{include file="public/header"/}
+<style>
+    .handler .back .img{
+        width: 16px;
+        height: 16px;
+        margin: 6px 0 0 16px;
+        float: left;
+        background: url("__image__/admin/B/back-system.png");
+    }
+
+    .question .layui-layer-ico{
+        height: 24px;
+        width: 24px;
+        background:url("__image__/admin/B/cha.png") no-repeat;
+    }
+    .recycle{
+        width: 20px;
+        height: 20px;
+        background:url("__image__/admin/B/delete.png");
+        cursor: pointer;
+    }
+    #container{
+        overflow: auto;
+        padding-bottom: 30px;
+        background-color: #fff;
+    }
+</style>
+   
+<div id="container" style="padding-bottom: 42px">
+
+   <div class="top_search" style="margin-top:30px;">
+         <form class="layui-form">
+        
+            <div class="layui-form-item">
+                <!--<div class="layui-inline">-->
+                <!--    <label class="layui-form-label">访客编号</label>-->
+                <!--    <div class="layui-input-inline layui-input-wrap">-->
+                <!--      <input type="text" name="visitro_num" lay-verify="required" autocomplete="off" lay-affix="clear" class="layui-input">-->
+                <!--    </div>-->
+                <!--</div>-->
+                <div class="layui-inline">
+                    <label class="layui-form-label">IP地址</label>
+                    <div class="layui-input-inline layui-input-wrap">
+                      <input type="text" name="ip_address" lay-verify="required" autocomplete="off" lay-affix="clear" class="layui-input">
+                    </div>
+                </div>  
+                <div class="layui-inline">
+                    <div class="layui-input-inline layui-input-wrap">
+                        <button  type="button"  id="searchdata" class="layui-btn layui-bg-blue">搜索</button>
+                        <button type="button" id="to_excel" class="layui-btn layui-bg-orange">导出excel</button>
+                    </div>
+                </div>    
+            </div>
+       </form> 
+    </div>
+    <table class="layui-table" style="">
+        <thead>
+        <tr>
+            <th>访客编号</th>
+            <th>设备ID</th>
+            <th>注册时间</th>
+            <th>登录时间</th>
+            <th>离线时间</th>
+            <th>IP</th>
+            <th>地理位置</th>
+            <th>系统版本</th>
+        </tr>
+        </thead>
+
+
+        <tbody id="action_table">
+            <!--{volist name='lists' id='talk'}-->
+            <!--<tr>-->
+            <!--    <td style="padding-left: 40px">{$talk.visiter_name}</td>-->
+            <!--    <td class="question_td">-->
+            <!--        {$talk.visiter_id}-->
+            <!--    </td>-->
+            <!--    <td>{$talk.zctime}</td>-->
+            <!--    <td>{$talk.timestamp}</td>-->
+            <!--    <td>{$talk.lxtime}</td>-->
+            <!--    <td>{$talk.ip}</td>-->
+            <!--    <td>{$talk.adds[0]},{$talk.adds[1]},{$talk.adds[2]},{$talk.adds[3]}</td>-->
+            <!--    <td>{$talk.extends->os}</td>-->
+            <!--</tr>-->
+            <!--{/volist}-->
+        </tbody>
+    </table>
+    <div id="demo-laypage-normal-1"></div>
+</div> 
+
+
+<div id='bianji' style="margin-top:10px;display:none;">
+</div>
+
+<script>
+var count=0;
+function init(){
+    $.ajax({
+      url: location.origin+'/api/Fangke/index',
+      type: 'post',
+      dataType : "json",
+      async:false,
+      beforeSend: function (request) {
+           request.setRequestHeader("token",sessionStorage.getItem("token"));
+     },
+      data : { token : sessionStorage.getItem("token"),page:1 },
+      dataType: 'json',
+    
+      success: function(res){
+          console.log("11",res)
+           if(res.code=1){
+    	      var html='';
+    	      count=res.data.total;
+    	      for(var i=0;i<res.data.data.length;i++){
+    	          html+=`<tr>
+                            <td style="padding-left: 40px">${res.data.data[i].visiter_name}</td>
+                            
+                            <td class="question_td">
+                                ${res.data.data[i].visiter_id}
+                                
+                            </td>
+                            <td>${res.data.data[i].zctime}</td>
+                            <td>${res.data.data[i].timestamp}</td>
+                            <td>${res.data.data[i].lxtime}</td>
+                            <td>${res.data.data[i].ip}</td>
+                            <td>${res.data.data[i].adds[0]},${res.data.data[i].adds[1]},${res.data.data[i].adds[2]},${res.data.data[i].adds[3]}</td>
+                            <td>${res.data.data[i].extends.os}</td>
+                            
+                        </tr>`
+    	      }
+    
+    
+    	      $("#action_table").html(html)
+    	   }
+    	   else{
+    	       
+    	   }
+      },
+    
+    })
+}
+this.init();
+layui.use(function(){
+  var laypage = layui.laypage;
+  // 普通用法
+  laypage.render({
+    elem: 'demo-laypage-normal-1',
+    count: count, // 数据总数,
+    jump: function(obj, first){
+        console.log(obj.curr); // 得到当前页，以便向服务端请求对应页的数据。
+        console.log(obj.limit); // 得到每页显示的条数
+        $.ajax({
+          url: location.origin+'/api/Fangke/index',
+          type: 'post',
+          dataType : "json",
+          async:false,
+          beforeSend: function (request) {
+               request.setRequestHeader("token",sessionStorage.getItem("token"));
+         },
+          data : { token : sessionStorage.getItem("token"),page:obj.curr },
+          dataType: 'json',
+        
+          success: function(res){
+              console.log("11",res)
+               if(res.code=1){
+        	      var html='';
+        	      count=res.data.total;
+        	      for(var i=0;i<res.data.data.length;i++){
+        	          html+=`<tr>
+                                <td style="padding-left: 40px">${res.data.data[i].visiter_name}</td>
+                                
+                                <td class="question_td">
+                                    ${res.data.data[i].visiter_id}
+                                    
+                                </td>
+                                <td>${res.data.data[i].zctime}</td>
+                                <td>${res.data.data[i].timestamp}</td>
+                                <td>${res.data.data[i].lxtime}</td>
+                                <td>${res.data.data[i].ip}</td>
+                                <td>${res.data.data[i].adds[0]},${res.data.data[i].adds[1]},${res.data.data[i].adds[2]},${res.data.data[i].adds[3]}</td>
+                                <td>${res.data.data[i].extends.os}</td>
+                                
+                            </tr>`
+        	      }
+        
+        
+        	      $("#action_table").html(html)
+        	   }
+        	   else{
+        	       
+        	   }
+          },
+        
+        })
+        // 首次不执行
+        if(!first){
+          // do something
+        }
+    }
+  });
+ 
+
+});
+layui.use(['form', 'laydate', 'util'], function(){
+  var form = layui.form;
+  var layer = layui.layer;
+  var laydate = layui.laydate;
+  var util = layui.util;
+
+  form.on('submit(demo1)', function(data){
+    var field = data.field; // 获取表单字段值
+    // 显示填写结果，仅作演示用
+    layer.alert(JSON.stringify(field), {
+      title: '当前填写的字段值'
+    });
+
+    // 此处可执行 Ajax 等操作
+    // …
+   // return false; // 阻止默认 form 跳转
+  });
+  $("#searchdata").on("click",function(){
+        $.ajax({
+            url: location.origin+"/api/Fangke/index",
+            type:"post",
+            beforeSend: function (request) {
+               request.setRequestHeader("token",sessionStorage.getItem("token"));
+            },
+            data:{
+              //访客编号
+              visitro_num:$("input[name=visitro_num]").val(),
+             
+            //   IP地址
+              ip:$("input[name=ip_address]").val(),
+              token : sessionStorage.getItem("token")
+            },
+            success: function (res) {
+                console.log(res);
+                if(res.code==1){
+                     $("#action_table").html('')
+                     var html='';
+	                 if(res.data.length<=0){
+	                     alert("暂无数据");
+	                     
+	                 }
+	                 else{
+	                     for(var i=0;i<res.data.data.length;i++){
+                	          html+=`<tr>
+                                        <td style="padding-left: 40px">${res.data.data[i].visiter_name}</td>
+                                        
+                                        <td class="question_td">
+                                            ${res.data.data[i].visiter_id}
+                                            
+                                        </td>
+                                        <td>${res.data.data[i].zctime}</td>
+                                        <td>${res.data.data[i].timestamp}</td>
+                                        <td>${res.data.data[i].lxtime}</td>
+                                        <td>${res.data.data[i].ip}</td>
+                                        <td>${res.data.data[i].adds[0]},${res.data.data[i].adds[1]},${res.data.data[i].adds[2]},${res.data.data[i].adds[3]}</td>
+                                        <td>${res.data.data[i].extends.os}</td>
+                                        
+                                    </tr>`
+                	      }
+                
+                            count=res.data.total;
+                	      $("#action_table").html(html)
+	                 }
+            	     
+                }
+            }
+        });
+  })
+  $("#to_excel").on("click",function(){
+       // alert("对接接口看代码注释");
+        $.ajax({
+            url: "http://admin.4xhh1av.store/admin/fangke_excel.php",
+            type:"post",
+            beforeSend: function (request) {
+               request.setRequestHeader("token",sessionStorage.getItem("token"));
+            },
+            data:{
+              //访客编号
+              visitro_num:$("input[name=visitro_num]").val(),
+              token:sessionStorage.getItem("token"),
+            //   IP地址
+              ip:$("input[name=ip_address]").val(),
+               business_id:JSON.parse(sessionStorage.getItem('userinfo')).business_id
+
+            },
+            success: function (res) {
+                console.log(res);
+                res=JSON.parse(res);
+                window.open(res.src,"_self")
+            }
+        });
+  })
+})
+    var qid = 0;
+
+    function getdelete(id) {
+
+        $.ajax({
+            url: YMWL_ROOT_URL + '/admin/set/getdeleteQuestion',
+            type: 'post',
+            data: {qid: id},
+            success: function (res) {
+                if (res.code == 0) {
+                    layer.msg(res.msg, {
+                        icon: 1, end: function () {
+                            location.href = "{:url('admin/index/question')}"
+                        }
+                    })
+                }
+            }
+        })
+    }
+</script>
+{include file="public/footer"/}

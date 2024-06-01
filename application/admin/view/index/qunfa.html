@@ -1,0 +1,310 @@
+{include file="public/header"/}
+<script type="text/javascript" src="__libs__/webrtc/recorder.js?v=__lkversion__"></script>
+
+
+
+
+<div id="mywenbwn" class="layui-form-item layui-form-text">
+    <div>
+        <textarea lay-verify="article_desc" style="width: 80%;" name="desc" placeholder="请输入内容" class="layui-textarea">defent</textarea>
+    </div>
+    <div>
+        <button  class="layui-btn" onclick="qunfasend('text')" lay-filter="formDemo">立即提交</button>
+    </div>
+
+</div>
+
+
+<div id="imgupload">
+    <button type="button" class="layui-btn uploadimgbtn" id=""><i class="layui-icon">&#xe67c;</i>上传图片</button>
+</div>
+
+<div id="audioload">
+    <button type="button" class="layui-btn uploadaudiobtn" id=""><i class="layui-icon">&#xe67c;</i>上传音频</button>
+</div>
+
+<div id="vidoload">
+    <button type="button" class="layui-btn uploadvideobtn" id=""><i class="layui-icon">&#xe67c;</i>上传视频</button>
+</div>
+
+<div id="mytest" style="display: flex;" style="display: flex; z-index: 10000; background-color: pink; width: 100%;">
+    <div class="userlis" style="width: 70%">
+        <div id="container" style="background-color: #f7f7f7;overflow: hidden;width: 70%">
+            <div class="all_content" style="overflow-y: hidden;">
+
+                <div class="layui-tab-content" style="padding: 0px;"><!--<img onclick="clearList()" class="clear-btn" src="/assets/images/index/clear.png"></img><span class="reply-border clear"></span><span class="reply-about clear">清空聊天列表</span>--><div class="layui-tab-item  layui-show" id="chat_list" style="width: 100%; overflow-y: auto; height: 855px;"><div visid="648827e5" id="v36343838323765352f31" class="visiter" onmouseover="showcut(this)" onmouseout="hidecut(this)"><i class="layui-icon myicon hide" title="删除" style="font_weight:blod" onclick="cut('648827e5')">ဆ</i><span id="c36343838323765352f31" class="notice-icon hide"></span><div class="visit_content" onclick="choose(7)"><img class="am-radius v-avatar icon_gray" id="img36343838323765352f31" src="%2Fassets%2Fimages%2Findex%2Favatar-red2.png" width="50px"><span class="c_name">%E6%B8%B8%E5%AE%A2648827e5</span><span class="c_time">7分钟前</span><div id="msg36343838323765352f31" class="newmsg">群发消息666</div></div></div><div visid="651114faq2g5p9et4i8" id="v363531313134666171326735703965743469382f31" class="visiter" onmouseover="showcut(this)" onmouseout="hidecut(this)"><i class="layui-icon myicon hide" title="删除" style="font_weight:blod" onclick="cut('651114faq2g5p9et4i8')">ဆ</i><span id="c363531313134666171326735703965743469382f31" class="notice-icon hide"></span><div class="visit_content" onclick="choose(6)"><img class="am-radius v-avatar icon_gray" id="img363531313134666171326735703965743469382f31" src="/assets/images/index/avatar-red2.png" width="50px"><span class="c_name">游客651114faq2g5p9et4i8</span><span class="c_time">7分钟前</span><div id="msg363531313134666171326735703965743469382f31" class="newmsg">群发消息666</div></div></div><div visid="650fcf45p9bll41hof7" id="v36353066636634357039626c6c3431686f66372f31" class="visiter" onmouseover="showcut(this)" onmouseout="hidecut(this)"><i class="layui-icon myicon hide" title="删除" style="font_weight:blod" onclick="cut('650fcf45p9bll41hof7')">ဆ</i><span id="c36353066636634357039626c6c3431686f66372f31" class="notice-icon hide"></span><div class="visit_content" onclick="choose(5)"><img class="am-radius v-avatar icon_gray" id="img36353066636634357039626c6c3431686f66372f31" src="/assets/images/index/avatar-red2.png" width="50px"><span class="c_name">游客650fcf45p9bll41hof7</span><span class="c_time">7分钟前</span><div id="msg36353066636634357039626c6c3431686f66372f31" class="newmsg">群发消息666</div></div></div><div visid="650e76c3ca6ss7qko23" id="v3635306537366333636136737337716b6f32332f31" class="visiter" onmouseover="showcut(this)" onmouseout="hidecut(this)"><i class="layui-icon myicon hide" title="删除" style="font_weight:blod" onclick="cut('650e76c3ca6ss7qko23')">ဆ</i><span id="c3635306537366333636136737337716b6f32332f31" class="notice-icon hide"></span><div class="visit_content" onclick="choose(4)"><img class="am-radius v-avatar icon_gray" id="img3635306537366333636136737337716b6f32332f31" src="/assets/images/index/avatar-red2.png" width="50px"><span class="c_name">游客650e76c3ca6ss7qko23</span><span class="c_time">7分钟前</span><div id="msg3635306537366333636136737337716b6f32332f31" class="newmsg">群发消息666</div></div></div><div visid="650e40dacqgpcd9k2g2" id="v3635306534306461637167706364396b3267322f31" class="visiter" onmouseover="showcut(this)" onmouseout="hidecut(this)"><i class="layui-icon myicon hide" title="删除" style="font_weight:blod" onclick="cut('650e40dacqgpcd9k2g2')">ဆ</i><span id="c3635306534306461637167706364396b3267322f31" class="notice-icon hide"></span><div class="visit_content" onclick="choose(3)"><img class="am-radius v-avatar icon_gray" id="img3635306534306461637167706364396b3267322f31" src="/assets/images/index/avatar-red2.png" width="50px"><span class="c_name">游客650e40dacqgpcd9k2g2</span><span class="c_time">7分钟前</span><div id="msg3635306534306461637167706364396b3267322f31" class="newmsg">群发消息666</div></div></div><div visid="650e40bf48op9hsfrf5" id="v363530653430626634386f70396873667266352f31" class="visiter" onmouseover="showcut(this)" onmouseout="hidecut(this)"><i class="layui-icon myicon hide" title="删除" style="font_weight:blod" onclick="cut('650e40bf48op9hsfrf5')">ဆ</i><span id="c363530653430626634386f70396873667266352f31" class="notice-icon hide"></span><div class="visit_content" onclick="choose(2)"><img class="am-radius v-avatar icon_gray" id="img363530653430626634386f70396873667266352f31" src="/assets/images/index/avatar-red2.png" width="50px"><span class="c_name">游客650e40bf48op9hsfrf5</span><span class="c_time">7分钟前</span><div id="msg363530653430626634386f70396873667266352f31" class="newmsg">群发消息666</div></div></div><div visid="650da709755urm42785" id="v363530646137303937353575726d34323738352f31" class="visiter onclick" onmouseover="showcut(this)" onmouseout="hidecut(this)"><i class="layui-icon myicon hide" title="删除" style="font_weight:blod" onclick="cut('650da709755urm42785')">ဆ</i><span id="c363530646137303937353575726d34323738352f31" class="notice-icon hide"></span><div class="visit_content" onclick="choose(1)"><img class="am-radius v-avatar icon_gray" id="img363530646137303937353575726d34323738352f31" src="/assets/images/index/avatar-red2.png" width="50px"><span class="c_name">游客650da709755urm42785</span><span class="c_time">7分钟前</span><div id="msg363530646137303937353575726d34323738352f31" class="newmsg">群发消息666</div></div></div></div><div class="layui-tab-item" id="wait_list" style="width: 100%; overflow-y: auto; height: 855px;"></div></div>
+
+                <div class="footer"><div class="tool_box" style="display: none;"><div class="wl_faces_content"><div class="wl_faces_main"><ul><li><a href="javascript:;"><img title="羊驼" src="/upload/emoji/emo_01.gif"></a></li><li><a href="javascript:;"><img title="神马" src="/upload/emoji/emo_02.gif"></a></li><li><a href="javascript:;"><img title="浮云" src="/upload/emoji/emo_03.gif"></a></li><li><a href="javascript:;"><img title="给力" src="/upload/emoji/emo_04.gif"></a></li><li><a href="javascript:;"><img title="围观" src="/upload/emoji/emo_05.gif"></a></li><li><a href="javascript:;"><img title="威武" src="/upload/emoji/emo_06.gif"></a></li><li><a href="javascript:;"><img title="熊猫" src="/upload/emoji/emo_07.gif"></a></li><li><a href="javascript:;"><img title="兔子" src="/upload/emoji/emo_08.gif"></a></li><li><a href="javascript:;"><img title="奥特曼" src="/upload/emoji/emo_09.gif"></a></li><li><a href="javascript:;"><img title="囧" src="/upload/emoji/emo_10.gif"></a></li><li><a href="javascript:;"><img title="互粉" src="/upload/emoji/emo_11.gif"></a></li><li><a href="javascript:;"><img title="礼物" src="/upload/emoji/emo_12.gif"></a></li><li><a href="javascript:;"><img title="微笑" src="/upload/emoji/emo_13.gif"></a></li><li><a href="javascript:;"><img title="嘻嘻" src="/upload/emoji/emo_14.gif"></a></li><li><a href="javascript:;"><img title="哈哈" src="/upload/emoji/emo_15.gif"></a></li><li><a href="javascript:;"><img title="可爱" src="/upload/emoji/emo_16.gif"></a></li><li><a href="javascript:;"><img title="可怜" src="/upload/emoji/emo_17.gif"></a></li><li><a href="javascript:;"><img title="抠鼻" src="/upload/emoji/emo_18.gif"></a></li><li><a href="javascript:;"><img title="吃惊" src="/upload/emoji/emo_19.gif"></a></li><li><a href="javascript:;"><img title="害羞" src="/upload/emoji/emo_20.gif"></a></li><li><a href="javascript:;"><img title="调皮" src="/upload/emoji/emo_21.gif"></a></li><li><a href="javascript:;"><img title="闭嘴" src="/upload/emoji/emo_22.gif"></a></li><li><a href="javascript:;"><img title="鄙视" src="/upload/emoji/emo_23.gif"></a></li><li><a href="javascript:;"><img title="爱你" src="/upload/emoji/emo_24.gif"></a></li><li><a href="javascript:;"><img title="流泪" src="/upload/emoji/emo_25.gif"></a></li><li><a href="javascript:;"><img title="偷笑" src="/upload/emoji/emo_26.gif"></a></li><li><a href="javascript:;"><img title="亲亲" src="/upload/emoji/emo_27.gif"></a></li><li><a href="javascript:;"><img title="生病" src="/upload/emoji/emo_28.gif"></a></li><li><a href="javascript:;"><img title="太开心" src="/upload/emoji/emo_29.gif"></a></li><li><a href="javascript:;"><img title="白眼" src="/upload/emoji/emo_30.gif"></a></li><li><a href="javascript:;"><img title="右哼哼" src="/upload/emoji/emo_31.gif"></a></li><li><a href="javascript:;"><img title="左哼哼" src="/upload/emoji/emo_32.gif"></a></li><li><a href="javascript:;"><img title="嘘" src="/upload/emoji/emo_33.gif"></a></li><li><a href="javascript:;"><img title="衰" src="/upload/emoji/emo_34.gif"></a></li><li><a href="javascript:;"><img title="委屈" src="/upload/emoji/emo_35.gif"></a></li><li><a href="javascript:;"><img title="呕吐" src="/upload/emoji/emo_36.gif"></a></li><li><a href="javascript:;"><img title="打哈欠" src="/upload/emoji/emo_37.gif"></a></li><li><a href="javascript:;"><img title="抱抱" src="/upload/emoji/emo_38.gif"></a></li><li><a href="javascript:;"><img title="怒" src="/upload/emoji/emo_39.gif"></a></li><li><a href="javascript:;"><img title="问号" src="/upload/emoji/emo_40.gif"></a></li><li><a href="javascript:;"><img title="馋" src="/upload/emoji/emo_41.gif"></a></li><li><a href="javascript:;"><img title="拜拜" src="/upload/emoji/emo_42.gif"></a></li><li><a href="javascript:;"><img title="思考" src="/upload/emoji/emo_43.gif"></a></li><li><a href="javascript:;"><img title="汗" src="/upload/emoji/emo_44.gif"></a></li><li><a href="javascript:;"><img title="打呼" src="/upload/emoji/emo_45.gif"></a></li><li><a href="javascript:;"><img title="睡" src="/upload/emoji/emo_46.gif"></a></li><li><a href="javascript:;"><img title="钱" src="/upload/emoji/emo_47.gif"></a></li><li><a href="javascript:;"><img title="失望" src="/upload/emoji/emo_48.gif"></a></li><li><a href="javascript:;"><img title="酷" src="/upload/emoji/emo_49.gif"></a></li><li><a href="javascript:;"><img title="好色" src="/upload/emoji/emo_50.gif"></a></li><li><a href="javascript:;"><img title="生气" src="/upload/emoji/emo_51.gif"></a></li><li><a href="javascript:;"><img title="鼓掌" src="/upload/emoji/emo_52.gif"></a></li><li><a href="javascript:;"><img title="晕" src="/upload/emoji/emo_53.gif"></a></li><li><a href="javascript:;"><img title="悲伤" src="/upload/emoji/emo_54.gif"></a></li><li><a href="javascript:;"><img title="抓狂" src="/upload/emoji/emo_55.gif"></a></li><li><a href="javascript:;"><img title="黑线" src="/upload/emoji/emo_56.gif"></a></li><li><a href="javascript:;"><img title="阴险" src="/upload/emoji/emo_57.gif"></a></li><li><a href="javascript:;"><img title="怒骂" src="/upload/emoji/emo_58.gif"></a></li><li><a href="javascript:;"><img title="心" src="/upload/emoji/emo_59.gif"></a></li><li><a href="javascript:;"><img title="伤心" src="/upload/emoji/emo_60.gif"></a></li></ul></div></div></div><div class="msg-input"><div><a onclick="opentab()" class="layui-btn msg-send-btn">
+                    群发
+                </a></div><div class="input-box"><textarea id="text_in" class="edit-ipt" style="overflow-y: auto; font-weight: normal; font-size: 14px; overflow-x: hidden; word-break: break-all; font-style: normal; outline: none;padding: 5px;border:none;border-radius: 10px;border: 1px solid #ddd;" contenteditable="true" hidefocus="true" tabindex="0"></textarea></div><div class="msg-toolbar-footer grey12"><a onclick="send()" class="layui-btn msg-send-btn">
+                    发送
+                </a><a id="showinfo" class="showinfo"><div style="height: 24px;border-left: 1px solid #FFF;margin-top: 8px;padding: 7px 15px"><img src="/assets/images/admin/B/up-menu.png" alt=""></div><!-- <i class='triangle'  style="margin-top: 21px;"></i> --></a></div></div><div class="msg-toolbar" style="background: #fff;border: none;"><a id="face_icon" onclick="faceon()"><img src="/assets/images/admin/B/smile.png" alt="表情" title="表情"></a><a><form id="picture" enctype="multipart/form-data"><div class="am-form-group am-form-file"><img src="/assets/images/admin/B/photo.png" alt=""><input type="file" name="upload" onchange="put()"></div></form></a><a><form id="file" enctype="multipart/form-data"><div class="am-form-group am-form-file"><img src="/assets/images/admin/B/file.png" alt=""><input type="file" name="folder" onchange="putfile()"></div></form></a><a href="javascript:getblack()"><img src="/assets/images/admin/B/blacklist.png" alt="移入黑名单" title="移入黑名单"></a><a onclick="getswitch()"><img src="/assets/images/admin/B/transfer.png" alt="客服转接" title="客服转接"></a><a onclick="gethistory()"><img src="/assets/images/admin/B/record.png" alt="历史记录" title="历史记录"></a><a onclick="toEvaluate()"><img src="/assets/images/admin/B/toEvaluate.png" alt="推送评价" title="推送评价"></a><a onmouseover="info()" id="paste" style="position:absolute; right:134px;bottom:30px;width: 120px;"><img src="/assets/images/admin/B/screen.png" alt=""> 怎样发截图？</a></div></div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="chatlis" style="width: 30%;background-color: #f7f7f7;" >
+        <div id="wrap" style="width: 100%;height:100%;overflow-y: auto;background-color: #fff">
+            <ul class="conversation2">
+
+                <li class="chatmsg" id="xiaox_66" style="height: auto;">
+                    <div class="showtime">
+                        2023-9-25 16:1
+                    </div>
+                    <div class="" style="position: absolute;top: 26px;right: 0;">
+                        <img class="my-circle cu_pic" src="/assets/images/admin/avatar-admin2.png"
+                             width="46px" height="46px">
+                    </div>
+                    <div class="outer-right">
+                        <div class="service">
+                    <pre>
+                        557&nbsp;&nbsp;
+                        <span onclick="revoke(66,1);" class="revoke-text" style="display: none;">
+                            (撤销)
+                        </span>
+                    </pre>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script type="text/javascript" src="__script__/ajaxuploadimg.js"></script>
+<script type="text/javascript" src="__script__/admin/chat.js?v=1.3"></script>
+<script>
+
+    let qunfamsglit=[];
+
+
+
+    function opentab() {
+
+
+
+        console.log($('#mywenbwn').html())
+        let creatTextarea=$('#mywenbwn').clone(true);
+        creatTextarea.attr('id','alertTextMsg')
+        console.log(creatTextarea.html())
+        layer.tab({
+            area: ['600px', '300px'],
+            tab: [{title: '文本回复', content: creatTextarea.html()},
+                {title: '图片回复', content: $('#imgupload').html()},
+                {title: '音频回复', content:$('#audioload').html()},
+                {title: '视频回复', content:$('#vidoload').html()}
+            ]
+        });
+
+        ajaxuploadimg.init({
+            'url':YMWL_ROOT_URL+'/admin/set/upload',//上传路径
+            'findElType':'el',
+            'uploadimgID':$('.uploadimgbtn').eq(1)[0],//图片id
+            'uploadButtonID':$('.uploadimgbtn').eq(1)[0],//触发上传按钮id
+            'uploadFiletype':'upload',
+            'lodingpath':'__STATIC__/imgs/loding.gif',//加载图
+            success:function (res) {
+                let ids=getAllSelectIds();
+                res=JSON.parse(res);
+                let msg=`<img class="chat-img" src="${res.data}" >`;
+                var sdata = $.cookie('cu_com');
+                var unstr=(new Date()).valueOf()+randomChar(5);
+                if (sdata) {
+                    var json = $.parseJSON(sdata);
+                    var img = json.avater;
+                }
+                console.log(res)
+
+                $.ajax({
+                    url:YMWL_ROOT_URL+"/admin/set/chats",
+                    type: "post",
+                    data: {visiter_id:ids,content: msg, avatar: img,unstr:unstr}
+                }).then(function (res){
+                    console.log(sdata);
+                    sdata=JSON.parse(sdata);
+                    console.log(sdata);
+                    console.log('res',res);
+                    qunfamsglit.push({
+                        'showtime':sdata.timestamp,
+                        'content':sdata.content,
+                    });
+                    displayMsg();
+                    $('.layui-textarea').eq(1).val('');
+                    layer.msg('发布成功')
+                });
+
+
+            }
+        });
+
+        //音频上传
+        ajaxuploadimg.init({
+            'url':YMWL_ROOT_URL+'/admin/set/upload',//上传路径
+            'findElType':'el',
+            'uploadimgID':$('.uploadaudiobtn').eq(1)[0],//图片id
+            'uploadButtonID':$('.uploadaudiobtn').eq(1)[0],//触发上传按钮id
+            'uploadFiletype':'upload',
+            'lodingpath':'__STATIC__/imgs/loding.gif',//加载图
+            success:function (res) {
+                let ids=getAllSelectIds();
+                res=JSON.parse(res);
+                //let msg=`<img class="chat-img" src="${res.data}" >`;
+                let msg=`<div><a href='${res.data}' style='display: inline-block;text-align: center;min-width: 70px;text-decoration: none;' download='语音.mp3'><i class='layui-icon' style='font-size: 60px;'>&#xe61e;</i><br>语音.mp3</a></div>`;
+                var sdata = $.cookie('cu_com');
+                var unstr=(new Date()).valueOf()+randomChar(5);
+                if (sdata) {
+                    var json = $.parseJSON(sdata);
+                    var img = json.avater;
+                }
+                console.log(res)
+
+                $.ajax({
+                    url:YMWL_ROOT_URL+"/admin/set/chats",
+                    type: "post",
+                    data: {visiter_id:ids,content: msg, avatar: img,unstr:unstr}
+                }).then(function (res){
+                    console.log(sdata);
+                    sdata=JSON.parse(sdata);
+                    console.log(sdata);
+                    console.log('res',res);
+                    qunfamsglit.push({
+                        'showtime':sdata.timestamp,
+                        'content':sdata.content,
+                    });
+                    displayMsg();
+                    $('.layui-textarea').eq(1).val('');
+                    layer.msg('发布成功')
+                });
+
+
+            }
+        });
+
+        //视频上传
+        ajaxuploadimg.init({
+            'url':YMWL_ROOT_URL+'/admin/set/upload',//上传路径
+            'findElType':'el',
+            'uploadimgID':$('.uploadvideobtn').eq(1)[0],//图片id
+            'uploadButtonID':$('.uploadvideobtn').eq(1)[0],//触发上传按钮id
+            'uploadFiletype':'upload',
+            'lodingpath':'__STATIC__/imgs/loding.gif',//加载图
+            success:function (res) {
+                let ids=getAllSelectIds();
+                res=JSON.parse(res);
+                //let msg=`<img class="chat-img" src="${res.data}" >`;
+                let msg=`<div><a href='${res.data}' style='display: inline-block;text-align: center;min-width: 70px;text-decoration: none;' download='a.mp4'><i class='layui-icon' style='font-size: 60px;'>&#xe61e;</i><br>a.mp4</a></div>`;
+                var sdata = $.cookie('cu_com');
+                var unstr=(new Date()).valueOf()+randomChar(5);
+                if (sdata) {
+                    var json = $.parseJSON(sdata);
+                    var img = json.avater;
+                }
+                console.log(res)
+
+                $.ajax({
+                    url:YMWL_ROOT_URL+"/admin/set/chats",
+                    type: "post",
+                    data: {visiter_id:ids,content: msg, avatar: img,unstr:unstr}
+                }).then(function (res){
+                    console.log(sdata);
+                    sdata=JSON.parse(sdata);
+                    console.log(sdata);
+                    console.log('res',res);
+                    qunfamsglit.push({
+                        'showtime':sdata.timestamp,
+                        'content':sdata.content,
+                    });
+                    displayMsg();
+                    $('.layui-textarea').eq(1).val('');
+                    layer.msg('发布成功')
+                });
+
+
+            }
+        });
+    }
+    function getAllSelectIds(){
+        let ids=[];
+        $('.visiter').each(function () {
+            ids.push($(this).attr('visid'));
+        })
+        ids=ids.join(',');
+        return ids;
+    }
+
+    /***
+     * 渲染聊天列表
+     */
+    function displayMsg(){
+        let str='';
+        for (let s of qunfamsglit){
+            str+=`
+            <li class="chatmsg" id="xiaox_66" style="height: auto;">
+                    <div class="showtime">
+                        ${s.showtime}
+                    </div>
+                    <div class="" style="position: absolute;top: 26px;right: 0;">
+                        <img class="my-circle cu_pic" src="/assets/images/admin/avatar-admin2.png"
+                             width="46px" height="46px">
+                    </div>
+                    <div class="outer-right">
+                        <div class="service">
+                    <pre>
+                        ${s.content}
+                        <span onclick="revoke(66,1);" class="revoke-text" style="display: none;">
+                            (撤销)
+                        </span>
+                    </pre>
+                        </div>
+                    </div>
+                </li>
+            `;
+            console.log(s);
+        }
+        $('.conversation2').html(str);
+
+    }
+
+    function qunfasend() {
+        let ids=getAllSelectIds();
+        //let msg=$('#alertTextMsg').val();
+        let msg=$('.layui-textarea').eq(1).val();
+        var sdata = $.cookie('cu_com');
+        var unstr=(new Date()).valueOf()+randomChar(5);
+        if (sdata) {
+            var json = $.parseJSON(sdata);
+            var img = json.avater;
+        }
+        console.log(ids);
+        console.log(msg);
+        console.log(img);
+        console.log(unstr);
+
+
+        $.ajax({
+            url:YMWL_ROOT_URL+"/admin/set/chats",
+            type: "post",
+            data: {visiter_id:ids,content: msg, avatar: img,unstr:unstr}
+        }).then(function (res){
+            console.log(sdata);
+            sdata=JSON.parse(sdata);
+            console.log(sdata);
+            console.log('res',res);
+            qunfamsglit.push({
+                'showtime':sdata.timestamp,
+                'content':sdata.content,
+            });
+            displayMsg();
+            $('.layui-textarea').eq(1).val('');
+            layer.msg('发布成功')
+        });
+    }
+
+</script>
+{include file="public/footer"/}

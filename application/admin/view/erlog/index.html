@@ -1,0 +1,282 @@
+{include file="public/header"/}
+<style>
+    .handler .back .img{
+        width: 16px;
+        height: 16px;
+        margin: 6px 0 0 16px;
+        float: left;
+        background: url("__image__/admin/B/back-system.png");
+    }
+
+    .question .layui-layer-ico{
+        height: 24px;
+        width: 24px;
+        background:url("__image__/admin/B/cha.png") no-repeat;
+    }
+    .recycle{
+        width: 20px;
+        height: 20px;
+        background:url("__image__/admin/B/delete.png");
+        cursor: pointer;
+    }
+    #container{
+        overflow: auto;
+        padding-bottom: 30px;
+        background-color: #fff;
+    }
+</style>
+    
+<div id="container" style="padding-bottom: 42px">
+
+   
+
+    <table class="layui-table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <!--<th>会员</th>-->
+            <th>操作日志</th>
+            <th>ip</th>
+            <th>地区</th>
+            <th>操作系统</th>
+            <th>时间</th>
+        </tr>
+        </thead>
+
+
+        <tbody id="action_table">
+            {volist name='lister' id='talk'}
+    
+            <tr>
+                <td style="padding-left: 40px">{$talk.id}</td>
+                <!--<td>{$talk.server}</td>-->
+                <td class="question_td">
+                    
+                    {$talk.content}
+                </td>
+                <td>{$talk.ip}</td>
+                <td>{$talk.diqu}</td>
+                <td>{$talk.os}</td>
+                <td>{$talk.time|showTime}</td>
+                
+            </tr>
+            {/volist}
+        </tbody>
+    </table>
+     {$page}
+</div>
+<div id='bianji' style="margin-top:10px;display:none;">
+</div>
+</div>
+<script>
+var qid = 0;
+
+
+$.ajax({
+  url: location.origin+'/api/Erlog/list',
+  type: 'post',
+  dataType : "json",
+  async:false,
+  beforeSend: function (request) {
+       request.setRequestHeader("token",sessionStorage.getItem("token"));
+ },
+  data : { token : sessionStorage.getItem("token") },
+  dataType: 'json',
+
+  success: function(res){
+      console.log(res)
+       if(res.code=1){
+	      var html='';
+	      res.data=res.data.data;
+	      for(var i=0;i<res.data.length;i++){
+	          html+=`<tr>
+                        <td style="padding-left: 40px">${res.data[i].id}</td>
+                        
+                        <td class="question_td">
+                            ${res.data[i].content}
+                            
+                        </td>
+                        <td>${res.data[i].ip}</td>
+                        <td>${res.data[i].diqu}</td>
+                        <td>${res.data[i].os}</td>
+                        <td>${new Date(res.data[i].time*1000)}</td>
+                        
+                    </tr>`
+	      }
+
+
+	      $("#action_table").html(html)
+	   }
+	   else{
+	       
+	   }
+  },
+
+})
+
+function question_alert_init() {
+    var question_uploadurl="{:url('set/myupload')}"
+        ajaxuploadimg.init({
+            'url':question_uploadurl,//上传路径
+            'findElType':'el',
+            'uploadimgID':$('.show_image_answerbtn').eq(1)[0],//图片id
+            'uploadButtonID':$('.show_image_answerbtn').eq(0)[0],//触发上传按钮id
+            'uploadFiletype':'upload',
+            'lodingpath':'__STATIC__/imgs/loding.gif',//加载图
+            success:function (res) {
+                res=JSON.parse(res);
+                $('.show_image_answerbtn').eq(1).attr('src',res.data);
+                
+
+                console.log(res);return false;
+
+            }
+        });
+        let audiopath='__image__/admin/B/icon/yinpinfuwu.png';
+        ajaxuploadimg.init({
+            'url':question_uploadurl,//上传路径
+            'findElType':'el',
+            'uploadimgID':$('.show_audio_answerbtn').eq(1)[0],//图片id
+            'uploadButtonID':$('.show_audio_answerbtn').eq(0)[0],//触发上传按钮id
+            'uploadFiletype':'upload',
+            'lodingpath':'__STATIC__/imgs/loding.gif',//加载图
+            success:function (res) {
+                res=JSON.parse(res);
+                $('.show_audio_answerbtn').eq(1).attr('src',audiopath);
+                
+                console.log(res);return false;
+
+            }
+        });
+        //视频消息
+        let vidiopath='__image__/admin/B/icon/shipin.png';
+        ajaxuploadimg.init({
+            'url':question_uploadurl,//上传路径
+            'findElType':'el',
+            'uploadimgID':$('.show_vido_answerbtn').eq(1)[0],//图片id
+            'uploadButtonID':$('.show_vido_answerbtn').eq(0)[0],//触发上传按钮id
+            'uploadFiletype':'upload',
+            'lodingpath':'__STATIC__/imgs/loding.gif',//加载图
+            success:function (res) {
+                res=JSON.parse(res);
+                $('.show_vido_answerbtn').eq(1).attr('src',vidiopath);
+                
+                console.log(res);return false;
+
+            }
+        });
+
+
+
+    }
+    function show(id,type,e) {
+        question_alert_init();
+        qid = id; 
+        console.log(id,type,e)
+        if(id>0){
+            $("#question_content").val(e.dataset.question)
+            $("#question_keyword").val(e.dataset.keyword)
+            if(type=='text'){
+                var select = 'dd[lay-value=text]';
+                 $("#show_text_answer_value").val(e.dataset.answer)
+                $('#question_type').siblings("div.layui-form-select").find('dl').find(select).click();
+                
+            }
+            else if(type=='image'){
+                var select = 'dd[lay-value=image]';
+                $('#question_type').siblings("div.layui-form-select").find('dl').find(select).click();
+               $(".show_image_answerbtn").eq("1").attr("src",e.dataset.answer)
+            }
+            else if(type=='audio'){
+                var select = 'dd[lay-value=audio]';
+                $('#question_type').siblings("div.layui-form-select").find('dl').find(select).click();
+                 $(".show_audio_answerbtn").eq("1").attr("src",e.dataset.answer)
+            }
+            else if(type=='vido'){
+                var select = 'dd[lay-value=vido]';
+                $('#question_type').siblings("div.layui-form-select").find('dl').find(select).click();
+                 $(".show_vido_answerbtn").eq("1").attr("src",e.dataset.answer)
+            }
+        }
+        
+        layer.open({
+            
+            type: 1,
+            title: id>0?'编辑':'添加',
+            area: ['800px', '500px'],
+            content: $("#alert_question")
+        });
+    }
+    function resetquestion(){
+       layer.closeLast("page");
+    }
+    function savequestion(){
+        var q = $("#question_content").val();
+        var k = $("#question_keyword").val();
+
+        var a = ''
+        var sort ="1";
+        var status = $("input[name='question_status']:checked").val();
+        var b="";
+        var type=$("#question_type").val();
+        if(type=="text"){
+            a=$("#show_text_answer_value").val();
+            b="<p>"+a+"</p>"
+        }
+        else if(type=="image"){
+            a=$(".show_image_answerbtn").eq(1).attr("src")
+             b="<img style='max-width:200px;max-height:200px;' src='"+a+"'>"
+        }
+        else if(type=="audio"){
+            
+            a=$(".show_audio_answerbtn").eq(1).attr("src")
+            b="<audio style='max-width:200px;max-height:200px;' src='"+a+"' controls></audio>"
+        }
+        else if(type=="vido"){
+            a=$(".show_vido_answerbtn").eq(1).attr("src")
+            b="<video style='max-width:200px;max-height:200px;' src='"+a+"' controls></video>"
+        }
+        if (q) {
+            $.ajax({
+                    url: YMWL_ROOT_URL + '/admin/manager/addquestion',
+                    type: 'post',
+                    data: {question: q,keyword:k,type:type,answer_src:a, answer: b, qid: qid,sort:sort,status:status},
+                    success: function (res) {
+
+                        if (res.code == 0) {
+                            layer.msg(res.msg, {
+                                icon: 1, end: function () {
+                                    parent.location.reload();
+                                }
+                            });
+                        } else {
+                            layer.msg(res.msg, {
+                                icon: 2
+                            });
+                        }
+                        lock = false;
+                    }
+                });
+        } else {
+            layer.msg('数据不完整');
+        }
+    }
+    function getdelete(id) {
+
+        $.ajax({
+            url: YMWL_ROOT_URL + '/admin/set/getdeleteQuestion',
+            type: 'post',
+            data: {qid: id},
+            success: function (res) {
+                if (res.code == 0) {
+                    layer.msg(res.msg, {
+                        icon: 1, end: function () {
+                            location.href = "{:url('admin/index/question')}"
+                        }
+                    })
+                }
+            }
+        })
+    }
+</script>
+{include file="public/footer"/}

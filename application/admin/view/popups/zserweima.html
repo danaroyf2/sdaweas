@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        YMWL_ROOT_URL = '{:request()->root()}';
+    </script>
+    <script type="text/javascript" src="__libs__/jquery/jquery.min.js?v=__lkversion__"></script>
+    <link href="__libs__/amaze/css/amazeui.min.css?v=__lkversion__" type="text/css" rel="stylesheet"/>
+    <script src="__libs__/amaze/js/amazeui.min.js?v=__lkversion__" type="text/javascript"></script>
+    <script src="__libs__/layer/layer.js?v=__lkversion__" type="text/javascript"></script>
+    <script src="__libs__/layui/layui.js?v=__lkversion__" type="text/javascript"></script>
+    <link href="__libs__/layui/css/layui.css?v=__lkversion__" rel="stylesheet">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #tab_title {
+            font-size: 13px;
+            color: #555555;
+            border: 1px solid #e5e3e9;
+            border-radius: 8px;
+        }
+
+        button.keep {
+            width: 66px;
+            height: 36px;
+            color: #ffffff;
+            font-size: 13px;
+            background-color: #7571f9;
+            border-radius: 16px;
+        }
+
+        button.reset {
+            width: 66px;
+            height: 36px;
+            color: #555555;
+            font-size: 13px;
+            background-color: #f7f7f7;
+            border-radius: 16px;
+            border: 0;
+        }
+        .layui-input-block{margin-left: 88px;}
+        .layui-form-label{width: 86px;}
+        img{ width: 300px;}
+    </style>
+    <style type="text/css" media="all">
+    #lj
+    {
+        width: 500px;
+        height: 50px;
+      
+     
+       border-color:#000;
+       margin: 0 auto;
+       text-align: center;
+    }
+     #ewm
+    {
+        width:300px;
+        height:300px;
+          margin: 0 auto;
+          text-align:center;
+    }
+    #anniu
+    {
+          width: 380px;
+        height: 50px;
+      
+       
+       border-color:#000;
+       margin: 0 auto;
+       
+      
+    }
+     #wenben
+    {
+        width:450px;
+      
+      color: #f00;
+       border-color:#000;
+       margin: 0 auto;
+       text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<div id="lj">
+    访客链接：<span id="fangkesrc"></span>
+</div>
+
+<div style="text-align: center;"  id="fangke_link_status">
+   
+  
+    
+</div>
+
+<div id="ewm">
+    <img src="" id="erweima_src">
+</div>
+<div id="anniu">
+    <input onclick="shixiaoqrcode('{$service['service_id']}');" style="background-color:#2A9DD5;  border-radius: 5px; " class="layui-btn layui-btn-danger chat2top js-ajax-btn" type="button" value="失效当前二维码">
+    <input onclick="recreatqrcode('{$service['service_id']}');" style="background-color:#2A9DD5; float: inline-end;  border-radius: 5px; " class="layui-btn layui-btn-danger chat2top js-ajax-btn" type="button" value="重新生成二维码">
+</div>
+<div id="wenben">
+    [失效当前一维码]:会失效一维码的[过期值]，导致之前依然能正常使用的二维码也全部失效。[请谨慎操作该种方式生成二维码!!!]<br/>
+[重新生成二维码]:不会失效一维码的[过期值]，不会影响之前能正常使用的二维码。[推荐使用该种方式生成一维码]<br/>
+两种方式都会根据最新配置的二维码域名生成新工维码，请在需要重新生成二维码之前，自己扫码确认自己当前一维码是否能正常使用，若能正常康用见出没必要重新生成一维码!!!
+    
+</div>
+
+<script>
+    $.ajax({
+        
+      
+      url: location.origin+'/api/Ercode/zuanshuercode',
+      type: 'post',
+      dataType : "json",
+      async:false,
+      beforeSend: function (request) {
+        request.setRequestHeader("token",sessionStorage.getItem("token"));
+      },
+      data : { token :sessionStorage.getItem("token") },
+      dataType: 'json',
+    
+      success: function(res){
+          console.log(res)
+          
+           if(res.code==1){
+    
+    	      $("#erweima_src").attr("src",res.data.qrimgpath)
+    	      $("#fangkesrc").html(res.data.url)
+    	      var html='';
+    	     
+    	   }
+    	   else{
+    	      layer.alert(res.msg);
+    	   }
+      },
+      
+    
+    })
+    
+    function shixiaoqrcode(service_id){
+
+         
+         $.ajax({
+  
+              url: location.origin+'/api/Ercode/zuanshushixiaoptercode',
+              type: 'post',
+              dataType : "json",
+              async:false,
+              beforeSend: function (request) {
+                    request.setRequestHeader("token",sessionStorage.getItem("token"));
+              },
+              data : { token :sessionStorage.getItem("token") },
+              dataType: 'json',
+            
+              success: function(res){
+                  console.log(res)
+                  layer.alert(res.msg);
+                  if(res.code=='1'){
+                     window.location.reload();
+                 }
+              }
+         })
+ 
+     }
+    
+
+     
+     
+     function recreatqrcode(service_id){
+         
+
+         $.ajax({
+  
+              url: location.origin+'/api/Ercode/rezuanshuercode',
+              type: 'post',
+              dataType : "json",
+              async:false,
+              beforeSend: function (request) {
+                    request.setRequestHeader("token",sessionStorage.getItem("token"));
+              },
+              data : { token :sessionStorage.getItem("token") },
+              dataType: 'json',
+            
+              success: function(res){
+                  console.log(res)
+                  layer.alert(res.msg);
+                  if(res.code=='1'){
+                     window.location.reload();
+                 }
+              }
+         })
+     }
+    
+    
+</script>
+
+</body>
+</html>
