@@ -1,0 +1,72 @@
+{
+  "id": "4502877",
+  "name": "客服系统",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "77191",
+      "name": "二维码",
+      "font_class": "erweima",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "890332",
+      "name": "黑名单",
+      "font_class": "wodeheimingdan",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "1488496",
+      "name": "打招呼",
+      "font_class": "dazhaohu",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "2058919",
+      "name": "统计",
+      "font_class": "shujutongji",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "3351428",
+      "name": "快捷回复",
+      "font_class": "kuaijie",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "8759889",
+      "name": "智能问答",
+      "font_class": "zhinengkefu",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "11613946",
+      "name": "消息",
+      "font_class": "xiaoxi1",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "19801153",
+      "name": "群发",
+      "font_class": "qunfa",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "20100392",
+      "name": "访客",
+      "font_class": "fangkelishi",
+      "unicode": "e657",
+      "unicode_decimal": 58967
+    }
+  ]
+}

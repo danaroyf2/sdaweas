@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<head>
+  <title>登录页面</title>
+  <meta charset="UTF-8">
+
+</head>
+
+<body>
+    <div>
+        
+    </div>
+    
+</body>
+<script>
+    (function(){
+        let cookieString=document.cookie;
+        let cookieArray=cookieString.split(";");
+        let visiter=cookieArray[0];
+        let visiterArray=visiter.split("=");
+        console.log(cookieString);
+        console.log(visiterArray);
+    })();
+</script>
+
+</html>

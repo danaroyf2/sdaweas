@@ -1,0 +1,639 @@
+{include file="public/header"/}
+<script type="text/javascript" src="__libs__/webrtc/recorder.js?v=__lkversion__"></script>
+<div id="container" style="background-color: #f7f7f7;overflow: hidden">
+    <div class="all_content" style="overflow-y: hidden;">
+        <section class="chatinfo">
+
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" style="margin: 0;height: 100%;background-color: #fff;position: relative;">
+                <ul class="layui-tab-title" style="height: 50px;border-bottom: 0;background-color: #f7f7f7">
+                    <li class="layui-this" style="width: 33%;height: 50px;line-height: 50px;color: #555555">访客信息<span class="line"></span></li>
+                    <li style="width: 33%;height: 50px;line-height: 50px;color: #555555">黑名单<span class="line"></span></li>
+                    <li style="width: 34%;height: 50px;line-height: 50px;color: #555555">快捷回复<span class="line"></span></li>
+                </ul>
+
+                <!--<div class="layui-tab-content" style="padding: 16px;height: 100%">-->
+                <!--    <div class="layui-tab-item layui-show">-->
+                <!--        <div class="" style="margin:24px;color: #555555;">-->
+
+                <!--            <div style="font-size: 16px;">访客信息</div>-->
+
+                <!--            <div style="margin-top: 12px;">-->
+                <!--                来源：<span class="record"></span>-->
+                <!--            </div>-->
+                <!--            <div style="margin-top: 14px; font-size: 12px;">-->
+                <!--                地区：<span class="ipdizhi"></span> 【<span class="iparea"></span>】-->
+                <!--            </div>-->
+
+                <!--            <div style="margin-top: 14px;">-->
+                <!--                状态：<span id="v_state" style="font-size: 10px;"></span>-->
+                <!--            </div>-->
+
+                <!--            <div style="margin-top: 14px;">-->
+                <!--                上次登录时间：<span-->
+                <!--                    id="last_login_time" style="font-size: 10px;"></span>-->
+                <!--            </div>-->
+
+                <!--            <div style="margin-top: 14px;">-->
+                <!--                登录次数：<span-->
+                <!--                    id="login_times" style="font-size: 10px;"></span>-->
+                <!--            </div>-->
+                <!--            <div style="margin-top: 14px;">-->
+                <!--                登录设备：<span-->
+                <!--                    id="login_device" style="font-size: 10px;"></span>-->
+                <!--            </div>-->
+
+                <!--            <div style="margin-top: 14px;">-->
+                <!--                姓名：<input type="text" id="name" placeholder="姓名填写后自动保存" class="layui-input" onblur="saveinfo()" />-->
+                <!--            </div>-->
+
+                <!--             <div style="margin-top: 14px;">-->
+                <!--                 电话：<input type="text" id="tel" placeholder="电话填写后自动保存" class="layui-input" onblur="saveinfo()" />-->
+                <!--            </div>-->
+                <!--            <div style="margin-top: 14px;">-->
+                <!--                备注：<textarea  id="comment" placeholder="备注信息，填写后自动保存" class="layui-input"  onblur="saveinfo()" style="height: 50px;"></textarea>-->
+                <!--            </div>-->
+
+                           
+
+                           
+                           
+                <!--        </div>-->
+                <!--    </div>-->
+
+                    <div class="layui-tab-item" id='black_list' style="width: 100%;overflow-y: auto;padding: 0px;">
+                    </div>
+
+                    <div class="layui-tab-item" id='word_list' style="width: 100%;height: 100%; overflow-y: auto;">
+                        <div id='quit_reply' >
+                            
+                                            
+                        </div>
+
+                       
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+<script type="text/javascript">
+    function toEvaluate() {
+        var data = $.cookie("cu_com");
+        var jsondata = $.parseJSON(data);
+        $.ajax({
+            url:YMWL_ROOT_URL + '/admin/set/pushComment',
+            type:'post',
+            data:{visiter_id:jsondata.visiter_id},
+            success:function(res){
+                if(res.code == 0){
+                    var str = '';
+                    str += "<div class='push-evaluation'>已推送评价</div>"
+                    $(".conversation").append(str);
+                    var div = document.getElementById("wrap");
+                    div.scrollTop = div.scrollHeight;
+                } else {
+                    layer.msg(res.msg, {icon: 2});
+                }
+            }
+        });
+    }
+
+    function saveinfo(){
+        var data = $.cookie("cu_com");
+        var jsondata = $.parseJSON(data);
+        var name=$("#name").val();
+        var tel=$('#tel').val();
+        var comment=$("#comment").val();
+        $.ajax({
+          url:YMWL_ROOT_URL+'/admin/manager/saveVisiter',
+          type:'post',
+          data:{name:name,tel:tel,comment:comment,visiter_id:jsondata.visiter_id},
+          success:function(res){
+            if(res.code == 0){
+                getchat();
+            }
+          }
+        });
+        
+    }
+
+
+    function show(){
+        let text = $('.manager-reply').text();
+        if(text == '管理快捷回复') {
+            $('.manager-reply').text('退出管理')
+        }else {
+            $('.manager-reply').text('管理快捷回复')
+        }
+        $('.del-reply').toggle();
+    }
+
+    function clearList() {
+        layer.open({
+            type: 1,
+            area: ['360px', '180'],
+            title:'',
+            content: '<div style="text-align:center;margin: 50px 0 30px;font-size:14px;">确认清空当前会话列表？</div>',
+            btn: ['确定', '取消'],
+            yes:function(res){
+                  $.ajax({
+                    url:YMWL_ROOT_URL+"/admin/set/clear",
+                    type: "post",
+                    data: {
+                        id: "{$arr['service_id']}"
+                    },
+                    success: function (res) {
+                        if (res.code ==0) {
+                            layer.msg(res.msg,{icon:2,offset:'20px'});
+                            layer.closeAll();
+                            $('.clear-btn').hide();
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+    function addreply(id){
+        $('.del-reply').hide();
+        $('.manager-reply').text('管理快捷回复')
+        layer.open({
+            type: 2,
+            skin:"tablist",
+            title: '新增快捷回复',
+            area: ['800px', '620px'],
+            content: YMWL_ROOT_URL + '/admin/popups/quickreply/id/'+id
+        });
+    }
+
+    function close(id){
+        $.ajax({
+            url:YMWL_ROOT_URL+'/admin/manager/delreply',
+            type:'post',
+            data:{id:id},
+            success:function(res){
+                if(res.code ==0){
+                    layer.msg(res.msg,{icon:1,end:function(){
+                        
+                         $("#reply"+id).remove();
+                    }});
+                }
+            }
+        })
+    }
+
+
+
+
+    function getOs() {
+        var OsObject = "";
+
+        if (isFirefox = navigator.userAgent.indexOf("Firefox") > 0) {
+            return "Firefox";
+        }
+    }
+
+ function showDiv(){
+       
+       $("#fuceng").toggleClass('hide');
+    }
+
+
+    $(function (){
+
+    $("#showinfo").on('click',function(){
+
+        showDiv();
+
+        $(document).one("click", function () {
+        
+         $("#fuceng").addClass('hide');
+
+        }); 
+        event.stopPropagation();//阻止事件向上冒泡
+    });
+
+   $("#fuceng").click(function (event) 
+    {
+        event.stopPropagation();//阻止事件向上冒泡
+        
+    });
+ });
+   
+
+
+   
+
+    function choosetype(obj){
+        $(obj).addClass('selected-li');
+        $(obj).siblings().removeClass('selected-li')
+        var type =$(obj).attr('name');
+        $.cookie('type',type);
+        $("#fuceng").addClass('hide');
+
+        types();
+    }
+
+
+    //获取qq截图的图片
+    (function () {
+        var imgReader = function (item) {
+            var blob = item.getAsFile(),
+                reader = new FileReader();
+            // 读取文件后将其显示在网页中
+            reader.onload = function (e) {
+                var msg = '';
+                msg += "<img   src='" + e.target.result + "'>";
+
+
+                    var sdata = $.cookie('cu_com');
+                    if (sdata) {
+                        var json = $.parseJSON(sdata);
+                        var img = json.avater;
+                    }
+
+                    var sid = $('#channel').text();
+                    var se = $("#chatmsg_submit").attr('name');
+                    var customer = $("#customer").text();
+                    var pic = $("#se_avatar").attr('src');
+                    var time;
+
+                    if($.cookie("time") == ""){
+                        var myDate = new Date();
+                        let hours = myDate.getHours();
+                        let minutes = myDate.getMinutes();
+                        if(hours < 10 ) {
+                            minutes = '0'+minutes.toString();
+                        }
+                        if(minutes < 10 ) {
+                            minutes = '0'+minutes.toString();
+                        }
+                            time = hours+":"+minutes;
+                        var timestamp = Date.parse(new Date());
+                        $.cookie("time",timestamp/1000);
+
+                    }else{
+
+                        var timestamp = Date.parse(new Date());
+
+                        var lasttime =$.cookie("time");
+                        if((timestamp/1000 - lasttime) >30){
+                            var myDate =new Date(timestamp);
+                            let hours = myDate.getHours();
+                            let minutes = myDate.getMinutes();
+                            if(hours < 10 ) {
+                                minutes = '0'+minutes.toString();
+                            }
+                            if(minutes < 10 ) {
+                                minutes = '0'+minutes.toString();
+                            }
+                                time = hours+":"+minutes;
+                        }else{
+                            time ="";
+                        }
+
+                        $.cookie("time",timestamp/1000);
+
+                    }
+                    var str = '';
+                    str += '<li class="chatmsg""><div class="showtime">' + time + '</div>';
+                    str += '<div style="position: absolute;top: 26px;right: 2px;"><img  class="my-circle se_pic" src="' + pic + '" width="50px" height="50px"></div>';
+                    str += "<div class='outer-right'><div class='service' style='padding:0;border-radius:0;max-height:100px'>";
+                    str += "<pre>" + msg + "</pre>";
+                    str += "</div></div>";
+                    str += "</li>";
+
+                    $(".conversation").append(str);
+                    $("#text_in").empty();
+
+                    var div = document.getElementById("wrap");
+                    div.scrollTop = div.scrollHeight;
+                    setTimeout(function(){
+                        $('.chatmsg').css({
+                            height: 'auto'
+                        });
+                    },0)
+                    $.ajax({
+                        url:YMWL_ROOT_URL+"/admin/set/chats",
+                        type: "post",
+                        data: {visiter_id:sid,content: msg, avatar: img}
+                    });
+                    
+                
+            };
+            // 读取文件
+            reader.readAsDataURL(blob);
+        };
+        document.getElementById('text_in').addEventListener('paste', function (e) {
+            // 添加到事件对象中的访问系统剪贴板的接口
+            var clipboardData = e.clipboardData,
+                i = 0,
+                items, item, types;
+
+            if (clipboardData) {
+                items = clipboardData.items;
+                if (!items) {
+                    return;
+                }
+                item = items[0];
+                // 保存在剪贴板中的数据类型
+                types = clipboardData.types || [];
+                for (; i < types.length; i++) {
+                    if (types[i] === 'Files') {
+                        item = items[i];
+                        break;
+                    }
+                }
+                // 判断是否为图片数据
+                if (item && item.kind === 'file' && item.type.match(/^image\//i)) {
+                    imgReader(item);
+                }
+            }
+        });
+    })();
+
+  
+    // 视频通话
+    var getvideo =function(){
+
+        var sid = $('#channel').text();
+        var pic = $("#se_avatar").attr('src');
+
+        var times = (new Date()).valueOf();
+        var se = $("#se").text();
+        //申请
+        $.ajax({
+            url:YMWL_ROOT_URL+'/admin/set/apply',
+            type: 'post',
+            data: {id: sid,channel: times,avatar:pic,name:se},
+            success:function(res){
+                if(res.code !=0){
+                    layer.msg(res.msg,{icon:2,offset:'20px'});
+                }else{
+                   
+                    var str='';
+                    str+='<div class="videos">';
+                    str+='<video id="localVideo" autoplay></video>';
+                    str+='<video id="remoteVideo" autoplay class="hidden"></video></div>';
+
+
+                      layer.open({
+                          type:1
+                          ,title: '视频'
+                          ,shade:0
+                          ,closeBtn:1
+                          ,area: ['440px', '378px']
+                          ,content:str
+                          ,end:function(){
+
+                           
+                             mediaStreamTrack.getTracks().forEach(function (track) {
+                                track.stop();
+                            });
+            
+                          }
+                    });
+                      
+                      
+                     try{
+                         connenctVide(times);
+                     }catch(e){
+                         console.log(e);
+                         return;
+                     }
+
+                }
+            }
+
+        });
+        
+      
+    }
+
+
+
+
+    //
+    var gethistory=function(){
+
+       var sdata = $.cookie("cu_com");
+       var jsondata = $.parseJSON(sdata);
+       var vid =jsondata.visiter_id;
+        layer.open({
+            type: 2,
+            title: '该用户所有历史消息',
+            area: ['600px', '500px'],
+            content: YMWL_ROOT_URL+'/admin/index/history?visiter_id='+vid
+        });
+
+    }
+
+    var getaudio =function(){
+
+          //音频先加载
+                var audio_context;
+                var recorder;
+                var wavBlob;
+                //创建音频
+                try {
+                    // webkit shim
+                    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.mediaDevices.getUserMedia;
+                    window.URL = window.URL || window.webkitURL;
+
+                    audio_context = new AudioContext;
+
+                    if (!navigator.getUserMedia) {
+                        console.log('语音创建失败');
+                    }
+                    ;
+                } catch (e) {
+                    console.log(e);
+                    return;
+                }
+                navigator.getUserMedia({audio: true}, function (stream) {
+                    var input = audio_context.createMediaStreamSource(stream);
+                    recorder = new Recorder(input);
+
+                    var falg = window.location.protocol;
+                    if (falg == 'https:') {
+                        recorder && recorder.record();
+
+                        //示范一个公告层
+                        layui.use(['jquery', 'layer'], function () {
+                            var layer = layui.layer;
+
+                            layer.msg('录音中...', {
+                                icon: 16
+                                , shade: 0.01
+                                , skin: 'layui-layer-lan'
+                                , time: 0 //20s后自动关闭
+                                , btn: ['发送', '取消']
+                                , yes: function (index, layero) {
+                                    //按钮【按钮一】的回调
+                                    recorder && recorder.stop();
+                                    recorder && recorder.exportWAV(function (blob) {
+                                        wavBlob = blob;
+                                        var fd = new FormData();
+                                        var wavName = encodeURIComponent('audio_recording_' + new Date().getTime() + '.wav');
+                                        fd.append('wavName', wavName);
+                                        fd.append('file', wavBlob);
+
+                                        var xhr = new XMLHttpRequest();
+                                        xhr.onreadystatechange = function () {
+                                            if (xhr.readyState == 4 && xhr.status == 200) {
+                                                jsonObject = JSON.parse(xhr.responseText);
+
+                                                voicemessage = '<div style="cursor:pointer;text-align:center;" onclick="getstate(this)" data="play"><audio src="'+jsonObject.data.src+'"></audio><i class="layui-icon" style="font-size:25px;">&#xe652;</i><p>音频消息</p></div>';
+
+                                                    var sid = $('#channel').text();
+                                                    var pic = $("#se_avatar").attr('src');
+                                                    var time;
+
+                                                    var sdata = $.cookie('cu_com');
+
+                                                    if (sdata) {
+                                                        var json = $.parseJSON(sdata);
+                                                        var img = json.avater;
+
+                                                    }
+
+                                                    if($.cookie("time") == ""){
+                                                        var myDate = new Date();
+                                                        let hours = myDate.getHours();
+                                                        let minutes = myDate.getMinutes();
+                                                        if(hours < 10 ) {
+                                                            minutes = '0'+minutes.toString();
+                                                        }
+                                                        if(minutes < 10 ) {
+                                                            minutes = '0'+minutes.toString();
+                                                        }
+                                                            time = hours+":"+minutes;
+                                                        var timestamp = Date.parse(new Date());
+                                                        $.cookie("time",timestamp/1000);
+
+                                                    }else{
+
+                                                        var timestamp = Date.parse(new Date());
+
+                                                        var lasttime =$.cookie("time");
+                                                        if((timestamp/1000 - lasttime) >30){
+                                                            var myDate =new Date(timestamp*1000);
+                                                            let hours = myDate.getHours();
+                                                            let minutes = myDate.getMinutes();
+                                                            if(hours < 10 ) {
+                                                                minutes = '0'+minutes.toString();
+                                                            }
+                                                            if(minutes < 10 ) {
+                                                                minutes = '0'+minutes.toString();
+                                                            }
+                                                                time = hours+":"+minutes;
+                                                        }else{
+                                                            time ="";
+                                                        }
+
+                                                        $.cookie("time",timestamp/1000);
+                                                    }
+                                                var str = '';
+                                                    str += '<li class="chatmsg"><div class="showtime">' + time + '</div>';
+                                                    str += '<div style="position: absolute;top: 26px;right: 2px;"><img  class="my-circle se_pic" src="' + pic + '" width="50px" height="50px"></div>';
+                                                    str += "<div class='outer-right'><div class='service'>";
+                                                    str += "<pre>" +  voicemessage + "</pre>";
+                                                    str += "</div></div>";
+                                                    str += "</li>";
+
+                                                    $(".conversation").append(str);
+                                                    $("#text_in").empty();
+
+                                                    var div = document.getElementById("wrap");
+                                                    div.scrollTop = div.scrollHeight;
+                                                    $(".chatmsg").css({
+                                                        height: 'auto'
+                                                    });
+                                                    $.ajax({
+                                                        url:YMWL_ROOT_URL+"/admin/set/chats",
+                                                        type: "post",
+                                                        data: {visiter_id:sid,content:  voicemessage, avatar: img}
+                                                    });
+                                            }
+                                        };
+                                        xhr.open('POST', '/admin/event/uploadVoice');
+                                        xhr.send(fd);
+                                    });
+                                    recorder.clear();
+                                    layer.close(index);
+                                }
+                                , btn2: function (index, layero) {
+                                    //按钮【按钮二】的回调
+                                    recorder && recorder.stop();
+                                    recorder.clear();
+                                    audio_context.close();
+                                    layer.close(index);
+                                }
+                            });
+
+                        });
+                    } else {
+                        
+                            layer.msg('音频输入只支持https协议！');
+                        
+                    }
+
+
+                }, function (e) {
+                     layer.msg(e);
+                });
+
+
+    }
+
+var getstate =function(obj){
+       
+       var c=obj.children[0];
+ 
+       var state=$(obj).attr('data');
+   
+       if(state == 'play'){
+         c.play();
+         $(obj).attr('data','pause');
+         $(obj).find('i').html("&#xe651;");
+       
+       }else if(state == 'pause'){
+          c.pause();
+         $(obj).attr('data','play');
+          $(obj).find('i').html("&#xe652;");
+       }
+
+        c.addEventListener('ended', function () {  
+         $(obj).attr('data','play');
+         $(obj).find('i').html("&#xe652;");
+        
+       }, false);
+    }
+
+    var getswitch =function(){
+
+    var sdata = $.cookie("cu_com");
+    var jsondata = $.parseJSON(sdata);
+    var sid = jsondata.visiter_id;
+
+    var se = $("#se").text();
+
+      layer.open({
+            type: 2,
+            title: '转接客服列表',
+            area: ['400px', '420px'],
+            shade: false,
+            content: YMWL_ROOT_URL+'/admin/index/service?visiter_id='+sid+'&name='+se
+        });
+    }
+
+</script>
+<script type="text/javascript" src="__script__/admin/chat.js?v=1.3"></script>
+{include file="public/footer"/}

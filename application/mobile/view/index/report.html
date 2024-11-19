@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<title>投诉</title>
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+		<link href="__libs__/layer/admin/layui.css?v=__lkversion__" rel="stylesheet">
+		<script src="__libs__/push/pusher.min.js?v=__lkversion__" type="text/javascript"></script>
+		<script type="text/javascript" src="__libs__/jquery/jquery.min.js?v=__lkversion__"></script>
+		<script src="__libs__/layui/layui.js?v=__lkversion__" type="text/javascript"></script>
+		<script src="__libs__/jquery/jquery.cookie.js?v=__lkversion__" type="text/javascript"></script>
+		<link rel="stylesheet" type="text/css" href="__style__/mobile/mobile.css?v=__lkversion__">
+		<script src="__libs__/jquery/jquery.form.min.js?v=__lkversion__" type="text/javascript"></script>
+		<link href="__libs__/layer/skin/layer.css?v=__lkversion__" type="text/css" rel="stylesheet" />
+		<script src="__libs__/layer/layer.js?v=__lkversion__" type="text/javascript"></script>
+		<script type="text/javascript" src="__libs__/webrtc/recorder.js?v=__lkversion__"></script>
+		<style type="text/css">
+			#close_icon {
+				position: absolute;
+				right: 10px;
+				top: 2px;
+				cursor: pointer;
+			}
+
+			.input-but {
+				position: relative;
+				display: inline-block;
+				vertical-align: middle;
+				width: 30px;
+				height: 30px;
+
+			}
+
+			.my-circle {
+				border-radius: 30px;
+			}
+
+			.size {
+				min-width: 30px;
+				height: 25px;
+				line-height: 30px;
+				border: none;
+			}
+
+			.fileinput {
+				width: 30px;
+				height: 30px;
+				position: absolute;
+				top: 0px;
+				right: 0px;
+				opacity: 0;
+				filter: alpha(opacity=0);
+				cursor: pointer;
+			}
+
+
+
+			.chatmsg_question {
+				position: relative;
+				margin-bottom: 228px;
+			}
+
+			.chatmsg .my-circle {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+			}
+
+			.foot_msg {
+				width: 100%;
+				height: 100%;
+				overflow: auto;
+				position: relative;
+			}
+
+
+			#text_in {
+				width: 100%;
+				padding-right: 20%;
+				height: 50px;
+				float: left;
+				border: 0;
+				padding-left: 12px;
+				color: #555555;
+				font-size: 16px;
+			}
+
+			#text_in+.send-btn {
+				position: absolute;
+				right: 12px;
+				top: 9px;
+				width: 60px;
+				height: 32px;
+				line-height: 32px;
+				border-radius: 6px;
+				padding: 0;
+				text-align: center;
+			}
+
+			.msg-toolbar {
+				width: 100%;
+				height: 44px;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				top: 50px;
+				background-color: #f7f7f7;
+			}
+
+			.msg-toolbar a {
+				float: left;
+				width: 25%;
+				margin: 0;
+				text-align: center;
+			}
+
+			.msg-toolbar a img {
+				margin-top: 10.5px;
+				height: 23px;
+				width: 23px;
+			}
+
+			.tool_box {
+				width: 100%;
+				height: auto;
+				position: absolute;
+				bottom: 94px;
+				top: -160px;
+				display: none;
+				background-color: #fff;
+			}
+
+			.wl_faces_main ul {
+				margin: 5px 5px;
+				overflow: hidden;
+				width: 100%;
+			}
+
+			.wl_faces_main ul li {
+				float: left;
+				height: 30px;
+				width: 26px;
+				text-align: center;
+
+			}
+
+			.wl_faces_main ul li img {
+				width: 22px;
+				height: 22px;
+				padding: 0;
+			}
+
+			.customer {
+				background-color: #dddddd;
+				display: inline-block;
+				padding: 12px;
+				float: right;
+				word-break: break-all;
+				word-wrap: break-word;
+				color: #555555;
+				border-radius: 8px;
+				border-top-right-radius: 0;
+				max-width: 80%;
+				box-sizing: border-box;
+			}
+
+			.outer-left:before,
+			.outer-left>i {
+				height: 0;
+				border: 0;
+			}
+
+			.outer-right:before,
+			.outer-right>i {
+				height: 0;
+				border: 0;
+			}
+
+			.service {
+				background-color: #fff;
+				display: inline-block;
+				margin-left: 10px;
+				padding: 12px;
+				float: left;
+				word-break: break-all;
+				word-wrap: break-word;
+				color: #555555;
+				border-radius: 8px;
+				border-top-left-radius: 0;
+				position: relative;
+				left: 0;
+				max-width: 80%;
+				border: 1px solid #dddddd;
+			}
+
+			.content {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				overflow-y: auto;
+				margin: 0;
+			}
+
+			.bg,
+			.offline {
+				position: fixed;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+				background-color: rgba(0, 0, 0, .4);
+				z-index: 998;
+				display: none;
+			}
+
+			.dialog {
+				width: 65%;
+				padding: 20px 25px;
+				border-radius: 5px;
+				background-color: #fff;
+				margin: 25% auto 0;
+				position: relative;
+				padding-bottom: 65px;
+			}
+
+			.bg .title {
+				font-size: 15px;
+				text-align: center;
+				color: #555555;
+				font-weight: 600;
+				margin-bottom: 15px;
+			}
+
+			.evaluate-item {
+				height: 26px;
+				display: flex;
+				align-items: center;
+			}
+
+			.evaluate-item img {
+				height: 16px;
+				width: 16px;
+				cursor: pointer;
+				margin-left: 14px;
+			}
+
+			.evaluate-item img:first-of-type {
+				margin-left: 14px;
+			}
+
+			.evaluate-text {
+				display: none;
+				border: 1px solid #4AACFF;
+				color: #4AACFF;
+				height: auto;
+				font-size: 13px;
+				border-radius: 5px;
+				margin-left: 12px;
+				padding: 0 5px;
+			}
+
+			.about-text {
+				border: 1px solid #E5E3E9;
+				border-radius: 10px;
+				width: 68%;
+				padding: 5px 10px;
+			}
+
+			.evaluate-btn {
+				display: flex;
+				justify-content: center;
+				margin-top: 20px;
+			}
+
+			.dialog .evaluate-btn {
+				position: absolute;
+				width: 100%;
+				bottom: 0;
+				left: 0;
+				height: 45px;
+				line-height: 45px;
+				border-bottom-left-radius: 5px;
+				border-bottom-right-radius: 5px;
+			}
+
+			.dialog .evaluate-btn button {
+				width: 50%;
+				border: 0;
+				font-size: 15px;
+			}
+
+			.dialog .evaluate-btn button.reset {
+				border-bottom-left-radius: 5px;
+				background-color: #F5F5F5;
+				color: #555555;
+			}
+
+
+			.dialog .evaluate-btn button.submit {
+				border-bottom-right-radius: 5px;
+				background-color: #7571f9;
+				color: #fff;
+			}
+
+			.evaluate-title {
+				min-width: 85px;
+				text-align: left;
+			}
+
+			.offline-item {
+				margin-bottom: 15px;
+			}
+
+			.offline-title {
+				text-align: left;
+				margin-bottom: 10px;
+			}
+
+			.offline-item input {
+				height: 40px;
+				border-radius: 20px;
+				padding: 0 5%;
+				border: 1px solid #E8E6EB;
+				width: 90%;
+			}
+
+			.keyword {
+				position: fixed;
+				bottom: 94px;
+				left: 0;
+				max-width: 100%;
+				height: 48px;
+				white-space: nowrap;
+				z-index: 90;
+				display: none;
+				overflow-y: auto;
+				background-color: #f7f7f7;
+			}
+
+			.keyword #question_key_list {
+				margin-top: 8px;
+				margin-left: 20px;
+			}
+
+			.keyword .swiper-slide {
+				display: inline-block;
+				width: auto;
+				height: 24px;
+				line-height: 24px;
+				padding: 0 10px;
+				border-radius: 12px;
+				border: 1px solid #E2E2E2;
+				font-size: 12px;
+				margin-right: 10px;
+				background-color: #fff;
+				cursor: pointer;
+			}
+
+			.fanhui {
+				color: #fff !important;
+				line-height: 45px;
+			}
+
+			.close {
+				position: absolute;
+				top: -23px;
+				right: -23px;
+				z-index: 999;
+				height: 27px;
+				width: 27px;
+				cursor: pointer;
+				border: 1px solid #fff;
+				border-radius: 50%;
+				overflow: hidden;
+			}
+			.report-content {
+    width: 100vw;
+    height: auto;
+    background-color: #f9f8f8;
+    position: relative;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    overflow-x: hidden;
+}
+
+.report-content header {
+    width: 100%;
+    height: 38px;
+    background-color: #fff;
+    margin: 0 auto;
+}
+
+.report-content header .left {
+    line-height: 38px;
+    display: block;
+    float: left;
+    font-weight: bold;
+    margin-left: 12px;
+}
+
+.report-content header .title {
+    line-height: 38px;
+    display: block;
+    font-weight: bold;
+    text-align: center;
+    font-size: 17px;
+}
+
+.report-content main {
+    margin: 0 auto 12px;
+}
+
+.report-content main .repotr-type {
+    width: 100%;
+    height: 142px;
+    background-color: #fff;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.report-content main .repotr-type .chooce {
+    width: 350px;
+    height: 78px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-left: 12px;
+}
+
+.chooce:after {
+    content: "";
+    width: 30%;
+}
+
+.btn {
+    width: 30%;
+    height: 29px;
+    font-size: 12px;
+    color: black;
+    margin-top: 10px;
+    border: none;
+    background-color: #f5f3f3;
+}
+
+.report-content main .repotr-cnt {
+    width: 100%;
+    height: 226px;
+    background-color: #fff;
+    margin-top: 12px;
+    margin: 12px auto 0;
+}
+
+.repotr-cnt .cnt textarea {
+    width: 338px;
+    height: 176px;
+    font-size: 14px;
+    color: black;
+    line-height: 32px;
+    border: none;
+    padding-left: 12px;
+}
+
+.report-content footer {
+    width: 100%;
+    height: 200px;
+    background-color: #fff;
+    margin: 0 auto;
+}
+
+.report-content footer .info {
+    height: 35px;
+    width: 350px;
+    border: none;
+    margin-left: 12px;
+    font-size: 14px;
+}
+
+.repotr-cnt .title, .report-content footer .title, .report-content main .repotr-type .title {
+    font-size: 16px;
+    line-height: 38px;
+    margin-top: 14px;
+    margin-left: 12px;
+}
+
+.repotr-type .title {
+    line-height: 20px;
+}
+
+.colorChange {
+    background-color: rgb(73, 174, 275);
+    color: #fff;
+}
+.van-button--info{
+    color: #fff;
+    background-color: #1989fa;
+    border: 1px solid #1989fa;
+}
+.van-button--round {
+    border-radius: 999px;
+}
+.van-button--normal {
+    padding: 0 15px;
+    font-size: 14px;
+}
+.van-button {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1.2;
+    text-align: center;
+   
+    cursor: pointer;
+    -webkit-transition: opacity .2s;
+    transition: opacity .2s;
+    -webkit-appearance: none;
+}
+		</style>
+	</head>
+	<body>
+	    
+		<div id="container" class="report-content">
+		    <main>
+			<a href="javascript:history.back(-1)" class="fanhui"><i class="layui-icon"
+					style="position: absolute;left:10px;top:0;font-size: 20px;z-index: 999"></i></a>
+			<div class="header" style="background-color: #7571f9"><span id="services" style="color: #FFF;">投诉</span>
+			</div>
+			<div class="containt" style="margin-top:50px">
+				<div class="repotr-type">
+					<div class="title">投诉类型<span style="color: red;">*</span></div>
+					<div class="chooce layui-form">
+					    <input type="radio" name="tstype" title="黄色暴力" lay-skin="tag">
+                        <input type="radio" name="tstype" title="诈骗" lay-skin="tag" > 
+                        <input type="radio" name="tstype" title="骚扰" lay-skin="tag" >
+                        <input type="radio" name="tstype" title="隐私泄露" lay-skin="tag" >
+                        <input type="radio" name="tstype" title="其他" lay-skin="tag" >
+
+					</div>
+				</div>
+				<div class="repotr-cnt">
+					<div class="title">投诉内容</div>
+					<div class="cnt" style="position: relative;"><textarea
+							placeholder="内容描述的越详细.有助于我们更快的处理问题"></textarea>
+						<div class="van-uploader" style="position: absolute; bottom: 10px; left: 20px;">
+							<div class="van-uploader__wrapper">
+								<div class="van-uploader__upload"><i
+										class="van-icon van-icon-photograph van-uploader__upload-icon"><!----></i><input
+										multiple="multiple" type="file" accept="image/*" class="van-uploader__input">
+								</div>
+							</div>
+						</div>
+					</div> 
+				</div>
+				<footer>
+					<div class="title">请留下你的联系方式</div> <input type="text" placeholder="手机号/微信号" class="info"> <button
+						capture="" class="van-button van-button--info van-button--normal van-button--round"
+						style="width: 95%; margin-top: 40px; margin-left: 12px;">
+						<div class="van-button__content"><span class="van-button__text">提交
+							</span></div>
+					</button>
+				</footer>
+			</div>
+			</main>
+		</div>
+		<!-- 引入 layui.js -->
+        <script src="//unpkg.com/layui@2.8.17/dist/layui.js"></script>
+		<script>
+        layui.use(function(){
+          var form = layui.form;
+          var $ = layui.$;
+          // 初始设置半选
+         
+        });
+        $(".van-button__text").on("click",function(){
+           alert("提交成功")
+           window.location.reload();
+        })
+        </script>
+
+	</body>
+</html>

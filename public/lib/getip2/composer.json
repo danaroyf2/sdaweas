@@ -1,0 +1,5 @@
+{
+    "require": {
+        "zoujingli/ip2region": "^2.0"
+    }
+}

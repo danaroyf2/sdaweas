@@ -1,0 +1,408 @@
+<style>
+    .layertab-img{
+        width: 100px;
+        display: block;
+        margin: 0 auto;
+    }
+
+</style>
+
+
+<div style="display: none;" id="layer_lab_alert" class="layui-code-item-preview">
+    <div class="layui-tab" lay-filter="test-hash">
+          <ul class="layui-tab-title">
+                <li class="layui-this" lay-id="wenben">文本内容</li>
+                <li lay-id="tupian">图片</li>
+                <li lay-id="yinpin">音频</li>
+                <li lay-id="shipin">视频</li>
+          </ul>
+          <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show" id="layertab-wenbn">
+                    <div style="display: flex;flex-flow: column;align-items: center;">
+                        <div style="width: 100%;margin-bottom: 20px;">
+                           
+                            <textarea  name="desc" id="layer_wenben_value"  placeholder="请输入内容" class="layui-textarea publicEditor uploadwenben"></textarea>
+                        </div>
+            
+                        <div>
+                            <button type="button" id="layer_wenben_submit" onclick="layertabneibusend('wenben')" class="layui-btn">发送文本</button>
+            <!--                <button type="button" onclick="layertabneibusend('wenben')" class="layui-btn layui-btn-disabled">发送文本</button>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-tab-item" id="layertab-img">
+                    
+                    <div style="display: flex;flex-flow: column;align-items: center;">
+                        <!--<div style="width: 100%;">-->
+                        <!--    <span style="color:red;">*</span>-->
+                        <!--    <span style="margin-right:10px;">内容</span>-->
+                        <!--    <button class="layui-btn layui-bg-blue layer_uploadimgbtn">点击上传123</button>-->
+                        <!--</div>-->
+                        <!--<div >-->
+                        <!--    <img class="layer_uploadimgbtn" style="width:100px;height:92px;margin:11px 0;">-->
+                        <!--</div>    -->
+                        <!--<div>-->
+                            
+                        <!--    <button type="button" id="layer_img_submit" onclick="layertabneibusend('img')" class="layui-btn">保存图片</button>-->
+                        <!--</div>-->
+                        <button type="button" class="layui-btn" id="ID-upload-custom-btn">
+                            <i class="layui-icon layui-icon-upload"></i> 多图片上传
+                        </button> 
+                        <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 11px;">
+                            预览图：
+                            <div class="layui-upload-list" id="upload-custom-preview"></div>
+                        </blockquote>
+                        <button type="button" id="layer_img_submit" onclick="layertabneibusend('img')" class="layui-btn">保存图片</button>
+                    </div>
+                </div>
+                <div class="layui-tab-item" id="layertab-audio">
+                    <div style="display: flex;flex-flow: column;align-items: center;">
+
+
+                        <div style="width: 100%;">
+                            <span style="color:red;">*</span>
+                            <span style="margin-right:10px;">内容</span>
+                            <button class="layui-btn layui-bg-blue layer_uploadaudio">点击上传</button>
+                        </div>
+                        <div >
+                            <audio class="layer_uploadaudio" controls></audio>
+                        </div>    
+                        <div>
+                            <button type="button" id="layer_audio_submit" onclick="layertabneibusend('audio')" class="layui-btn">保存音频</button>
+                        </div>
+                    </div> 
+                </div>
+                <div class="layui-tab-item" id="layertab-vidio">
+                    <div style="display: flex;flex-flow: column;align-items: center;">
+
+                        <div style="width: 100%;margin-right:10px;">
+                            <span style="color:red;">*</span>
+                            <span style="margin-right:10px;">内容</span>
+                            <button class="layui-btn layui-bg-blue layer_uploadvidio">点击上传</button>
+                        </div>
+                        <div >
+                            <video class="layer_uploadvidio" style="width:100px;height:92px;margin:11px 0;" controls></video>
+                        </div> 
+                        <div>
+                            <button type="button" id="layer_vidio_submit" onclick="layertabneibusend('video')" class="layui-btn">保存视频</button>
+                        </div>
+                    </div>
+                </div>
+          </div>
+    </div>
+</div>
+
+<div style="display: none;" class="layui-code-item-preview layui-layer-wrap">
+
+    <div id="layertab-wenbn-custom">
+        <div style="display: flex;flex-flow: column;align-items: center;">
+            <div style="width: 100%;margin-bottom: 20px;">
+                <textarea  name="desc"  placeholder="请输入内容" class="layui-textarea uploadwenben"></textarea>
+            </div>
+
+            <div>
+                <button type="button" onclick="layertabneibusend('wenben')" class="layui-btn">发送文本</button>
+<!--                <button type="button" onclick="layertabneibusend('wenben')" class="layui-btn layui-btn-disabled">发送文本</button>-->
+            </div>
+        </div>
+
+    </div>
+
+
+<!--    图片消息-->
+    <div id="layertab-img-custom">
+        <div style="display: flex;flex-flow: column;align-items: center;">
+            <!--<div style="width: 100%;margin-bottom: 20px;">-->
+            <!--    <img src="__image__/admin/B/icon/upload.png" alt="" class="layertab-img uploadimgbtn">-->
+            <!--</div>-->
+            <!--<div style="width: 100%;">-->
+            <!--    <span style="color:red;">*</span>-->
+            <!--    <span style="margin-right:10px;">内容</span>-->
+            <!--    <button class="layui-btn layui-bg-blue uploadimgbtn">点击上传</button>-->
+            <!--</div>-->
+            <!--<div >-->
+            <!--    <img class="uploadimgbtn" style="width:100px;height:92px;margin:11px 0;">-->
+            <!--</div>  -->
+            
+            <button type="button" class="layui-btn" id="ID-upload-custom-btn">
+                <i class="layui-icon layui-icon-upload"></i> 多图片上传
+            </button> 
+            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 11px;">
+                预览图：
+                <div class="layui-upload-list" id="upload-custom-preview"></div>
+            </blockquote>
+            <div>
+                <button type="button" onclick="layertabneibusend('img')" class="layui-btn">发送图片</button>
+            </div>
+        </div>
+
+    </div>
+
+<!--    音乐消息-->
+    <div id="layertab-audio-custom">
+        <div style="display: flex;flex-flow: column;align-items: center;">
+            <div style="width: 100%;margin-bottom: 20px;">
+                <img src="__image__/admin/B/icon/upload.png" alt="" class="layertab-img uploadaudio">
+            </div>
+
+            <div>
+                <button type="button" onclick="layertabneibusend('audio')" class="layui-btn">发送音频</button>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--    视频消息-->
+    <div id="layertab-vidio-custom">
+        <div style="display: flex;flex-flow: column;align-items: center;">
+            <div style="width: 100%;margin-bottom: 20px;">
+                <img src="__image__/admin/B/icon/upload.png" alt="" class="layertab-img uploadvidio">
+            </div>
+
+            <div>
+                <button type="button" onclick="layertabneibusend('video')" class="layui-btn">发送视频</button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+
+<script type="text/javascript" src="__script__/ajaxuploadimg.js"></script>
+<script>
+let layerTabUploadUrl="{:url('set/myupload')}";
+var img_file_list=[];
+
+    var editorOption = {
+        UEDITOR_HOME_URL: "__assets__/ueditor/",
+        UEDITOR_ROOT_URL: "__assets__/ueditor/",
+        serverUrl: "{:url('upload/ueditor',['action'=>'config','service_id'=>$_SESSION['Msg']['service_id'],'admin_id'=>0])}",
+        lang: "zh-cn",
+        zIndex:"39991015",
+        toolbars: [["undo", "redo", "|", "bold", "italic", "underline", "fontborder", "strikethrough", "superscript", "subscript", "removeformat", "formatmatch", "autotypeset", "blockquote", "pasteplain", "|", "forecolor", "backcolor",  "selectall", "cleardoc", "|","lineheight", "|", "customstyle", "paragraph", "fontfamily", "fontsize", "|","emotion","link", "unlink","|"]],
+        initialContent: "",
+        pageBreakTag: "_ueditor_page_break_tag_",
+        initialFrameWidth: "100%",
+        initialFrameHeight: "160", 
+        initialStyle: "body{font-size:14px}",
+        autoFloatEnabled: false,
+        allowDivTransToP: true,
+        autoHeightEnabled: false,
+        charset: "utf-8",
+    };
+    var layer_DomUe=UE.getEditor("layer_wenben_value",editorOption)
+    //alert(1);
+    let dataurl='';
+    //let layerTabUploadUrl=YMWL_ROOT_URL+'/admin/set/upload';//上传路径
+    //let layerTabUploadUrl="{:url('set/upload')}"
+    
+    var editid='';
+    //准备发送前的数据！
+    let layerTabBefosendData={
+        'wenben':'',
+        'img':'',
+        'audio':'',
+        'video':'',
+    };
+    var inst='';
+    //openLayerTab();
+   var loadstatus='';
+    layui.use(function(){
+      var upload = layui.upload;
+      var layer = layui.layer;
+      var element = layui.element;
+      var $ = layui.$;
+      img_file_list=[]
+      // 单图片上传
+       inst=upload.render({
+        elem: '#ID-upload-custom-btn',
+        url: layerTabUploadUrl, // 实际使用时改成您自己的上传接口即可。
+        multiple: true,
+        field:'upload',
+        before: function(obj){
+          // 预读本地文件示例，不支持ie8
+          obj.preview(function(index, file, result){
+            $('#upload-custom-preview').append('<img  src="'+ result +'" alt="'+ file.name +'" style="width: 90px; height: 90px;">');
+
+          });
+        },
+        choose: function(obj){
+          // 将每次选择的文件追加到文件队列
+          // 预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
+          obj.preview(function(index, file, result){
+            console.log(index); // 得到文件索引
+            //console.log(file); // 得到文件对象
+            //console.log(result); // 得到文件base64编码，比如图片
+            
+            // obj.resetFile(index, file, '123.jpg'); // 重命名文件名
+            
+            // 这里还可以做一些 append 文件列表 DOM 的操作
+            
+            // obj.upload(index, file); // 对上传失败的单个文件重新上传，一般在某个事件中使用
+            // delete files[index]; //删除列表中对应的文件，一般在某个事件中使用
+          });
+          loadstatus=layer.msg('加载中', {
+            icon: 16,
+            shade: 0.01  ,
+            time:1000000000
+          });
+
+        },
+        done: function(res){
+          // 上传完毕
+          console.log(res);
+          img_file_list.push(res.data)
+        },
+        allDone: function(obj){
+          console.log("total",obj.total); // 上传的文件总数
+          layer.close(loadstatus);
+        }
+      });
+    });
+
+    //打开后初始化
+    function layertabinit() {
+        // ajaxuploadimg.init({
+        //     'url':layerTabUploadUrl,//上传路径
+        //     'findElType':'el',
+        //     'uploadimgID':$('.layer_uploadimgbtn').eq(1)[0],//图片id
+        //     'uploadButtonID':$('.layer_uploadimgbtn').eq(0)[0],//触发上传按钮id
+        //     'uploadFiletype':'upload',
+        //     'lodingpath':'__STATIC__/imgs/loding.gif',//加载图
+        //     success:function (res) {
+        //         res=JSON.parse(res);
+        //         $('.uploadimgbtn').eq(1).attr('src',res.data);
+        //         layerTabBefosendData['img']={
+        //             'url':res.data,
+        //             'info':res.info,
+        //         }
+
+        //         console.log(res);return false;
+
+        //     }
+        // });
+        let audiopath='__image__/admin/B/icon/yinpinfuwu.png';
+        ajaxuploadimg.init({
+            'url':layerTabUploadUrl,//上传路径
+            'findElType':'el',
+            'uploadimgID':$('.layer_uploadaudio').eq(1)[0],//图片id
+            'uploadButtonID':$('.layer_uploadaudio').eq(0)[0],//触发上传按钮id
+            'uploadFiletype':'upload',
+            'lodingpath':'__STATIC__/imgs/loding.gif',//加载图
+            success:function (res) {
+                res=JSON.parse(res);
+                $('.uploadaudio').eq(1).attr('src',audiopath);
+                layerTabBefosendData['audio']={
+                    'url':res.data,
+                    'info':res.info,
+                };
+                console.log(res);return false;
+
+            }
+        });
+        //视频消息
+        let vidiopath='__image__/admin/B/icon/shipin.png';
+        ajaxuploadimg.init({
+            'url':layerTabUploadUrl,//上传路径
+            'findElType':'el',
+            'uploadimgID':$('.layer_uploadvidio').eq(1)[0],//图片id
+            'uploadButtonID':$('.layer_uploadvidio').eq(0)[0],//触发上传按钮id
+            'uploadFiletype':'upload',
+            'lodingpath':'__STATIC__/imgs/loding.gif',//加载图
+            success:function (res) {
+                res=JSON.parse(res);
+                $('.uploadvidio').eq(1).attr('src',vidiopath);
+                layerTabBefosendData['video']={
+                    'url':res.data,
+                    'info':res.info,
+                };
+                console.log(res);return false;
+
+            }
+        });
+
+
+
+    }
+    function layertabneibusend(type){
+        if(type=='wenben'){
+            layerTabBefosendData['wenben']=layer_DomUe.getContent();
+        }
+        if(type=='img'){
+            layerTabBefosendData['img']=img_file_list;
+        }
+        layertabsend(type,layerTabBefosendData[type]);
+    }
+
+    function editTab(data){
+        console.log(data,"123");
+        var id="#datadetail"+data;
+        console.log($(id).html());
+        var content_src=$(id).html();
+        $("#layer_lab_alert").attr("data-sid",data)
+        var datatype=$(id).attr("data-type")
+        layer.open({
+            type: 1,
+            title:'编辑',
+            shade:0,
+            area: ['700px', '450px'], // 宽高
+            content: $("#layer_lab_alert"),
+            success:function(layero, index, that){
+                if(datatype=='text'){
+                 // $("#layer_wenben_value").val(data.content_src)
+                    setTimeout(function(){
+                        layer_DomUe.setContent(content_src)
+                    },300)
+                }
+                else if(datatype=='image'){
+                    //$(".layer_uploadimgbtn").eq(1).attr("src",content_src)
+                    layerTabBefosendData['img']=content_src
+                    img_file_list[0]=content_src
+                    console.log(layerTabBefosendData['img'])
+                     $('#upload-custom-preview').append('<img  src="'+ content_src +'"style="width: 90px; height: 90px;">');
+                }
+                else if(datatype=='audio'){
+                    $(".layer_uploadaudio").eq(1).attr("src",content_src)
+                }
+                else if(datatype=='video'){
+                    $(".layer_uploadvidio").eq(1).attr("src",content_src)
+                }
+            }
+        });
+        layertabinit();
+    }
+    function openLayerTab() {
+        // layer.tab({
+        //     area: ['600px', '300px'],
+        //     tab: [{
+        //         title: '文本内容',
+        //         content: $('#layertab-wenbn-custom').html()
+        //     }, {
+        //         title: '图片',
+        //         content: $('#layertab-img-custom').html()
+        //     }, {
+        //         title: '音频',
+        //         content: $('#layertab-audio-custom').html()
+        //     }, {
+        //         title: '视频',
+        //         content: $('#layertab-vidio-custom').html()
+        //     }
+        //     ]
+        // });
+         $("#layer_lab_alert").attr("data-sid",0)
+        layer.open({
+            type: 1,
+            title:'添加',
+            shade:0,
+            area: ['700px', '450px'], // 宽高
+            content: $("#layer_lab_alert")
+        });
+        layertabinit();
+    }
+    
+</script>

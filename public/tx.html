@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新建页面</title>
+    <!-- jquery -->
+    <script src="https://tanyue.gitee.io/my-tools/js/jquery-3.4.1.min.js"></script>
+    <!--  -->
+    <!-- 引入CSS -->
+    <!-- 引入JS -->
+
+</head>
+
+<body>
+
+    <div>
+        <!-- html内容 -->
+        <div style="height: 800px;">
+            <iframe id="mapPage" width="100%" height="100%" frameborder=0
+            
+            src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=FNWBZ-PRKCJ-JC6FA-D7IZO-SZHSZ-UKFYJ&referer=map">
+             </iframe>
+        </div>
+        
+
+     
+
+        <!-- html内容结束 -->
+    </div>
+
+    <!-- 本页面JS代码 -->
+    <script>
+        window.addEventListener('message', function (event) {
+            // 接收位置信息，用户选择确认位置点后选点组件会触发该事件，回传用户的位置信息
+            var loc = event.data;
+            if (loc && loc.module == 'locationPicker') {//防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
+                console.log('location', loc);
+            }
+        }, false);
+    </script>
+</body>
+
+</html>
